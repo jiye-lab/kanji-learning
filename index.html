@@ -502,7 +502,7 @@
 
         /* 第三排键盘布局优化 */
         .keyboard-row-third {
-            padding: 0 15px;
+            justify-content: center;
         }
 
         .keyboard-row-third .keyboard-key {
@@ -510,8 +510,8 @@
         }
 
         .keyboard-row-third .backspace-key {
-            flex: 1.2;
-            min-width: 45px;
+            flex: 2;
+            min-width: 60px;
         }
 
         .keyboard-key.function-key {
@@ -580,6 +580,12 @@
             .keyboard-row {
                 gap: 4px;
             }
+
+            .keyboard-row-third .backspace-key {
+                flex: 1.5;
+                min-width: 40px;
+                font-size: 1.1em;
+            }
         }
 
         @media (max-width: 480px) {
@@ -591,6 +597,12 @@
 
             .keyboard-row {
                 gap: 3px;
+            }
+
+            .keyboard-row-third .backspace-key {
+                flex: 1.3;
+                min-width: 35px;
+                font-size: 1em;
             }
         }
     </style>
@@ -2045,7 +2057,6 @@
                          <div class="keyboard-key" data-key="n">n</div>
                          <div class="keyboard-key" data-key="m">m</div>
                          <div class="keyboard-key function-key backspace-key" data-key="backspace">←</div>
-                         <div class="keyboard-key function-key backspace-key" data-key="backspace">←</div>
                      </div>
                      <div class="keyboard-row">
                          <div class="keyboard-key function-key submit-key" data-key="submit">提交</div>
@@ -2057,6 +2068,20 @@
             
             // 添加键盘按键事件
             virtualKeyboard.addEventListener('click', handleKeyboardClick);
+            virtualKeyboard.addEventListener('touchend', handleKeyboardClick);
+            
+            // 防止触摸时的默认行为
+            virtualKeyboard.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            });
+            
+            // 为每个按键添加触摸优化
+            const keys = virtualKeyboard.querySelectorAll('.keyboard-key');
+            keys.forEach(key => {
+                key.style.userSelect = 'none';
+                key.style.webkitUserSelect = 'none';
+                key.style.webkitTouchCallout = 'none';
+            });
         }
         
         // 处理键盘点击
@@ -2086,10 +2111,19 @@
                 return;
             }
             
-            // 添加视觉反馈
+            // 添加视觉反馈和触摸反馈
             target.style.background = '#007bff';
             target.style.color = 'white';
+            target.style.transform = 'scale(0.95)';
+            target.style.transition = 'all 0.1s ease';
+            
+            // 触觉反馈（如果支持）
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
             setTimeout(() => {
+                target.style.transform = 'scale(1)';
                 if (target.classList.contains('function-key')) {
                     target.style.background = '';
                     target.style.color = '';
