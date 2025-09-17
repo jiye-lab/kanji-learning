@@ -492,11 +492,26 @@
             text-align: center;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            flex: 1;
         }
 
         .keyboard-key:active {
             background: #e9ecef;
             transform: scale(0.95);
+        }
+
+        /* 第三排键盘布局优化 */
+        .keyboard-row-third {
+            padding: 0 15px;
+        }
+
+        .keyboard-row-third .keyboard-key {
+            flex: 1;
+        }
+
+        .keyboard-row-third .backspace-key {
+            flex: 1.2;
+            min-width: 45px;
         }
 
         .keyboard-key.function-key {
@@ -520,6 +535,8 @@
             color: white;
             font-weight: 600;
             min-width: 80px;
+            flex: 1;
+            margin: 0 15px;
         }
 
         .keyboard-key.submit-key:active {
@@ -2019,7 +2036,7 @@
                          <div class="keyboard-key" data-key="k">k</div>
                          <div class="keyboard-key" data-key="l">l</div>
                      </div>
-                     <div class="keyboard-row">
+                     <div class="keyboard-row keyboard-row-third">
                          <div class="keyboard-key" data-key="z">z</div>
                          <div class="keyboard-key" data-key="x">x</div>
                          <div class="keyboard-key" data-key="c">c</div>
@@ -2027,10 +2044,11 @@
                          <div class="keyboard-key" data-key="b">b</div>
                          <div class="keyboard-key" data-key="n">n</div>
                          <div class="keyboard-key" data-key="m">m</div>
-                         <div class="keyboard-key function-key backspace-key" data-key="backspace" style="flex: 2;">←</div>
+                         <div class="keyboard-key function-key backspace-key" data-key="backspace">←</div>
+                         <div class="keyboard-key function-key backspace-key" data-key="backspace">←</div>
                      </div>
                      <div class="keyboard-row">
-                         <div class="keyboard-key function-key submit-key" data-key="submit" style="flex: 1;">提交</div>
+                         <div class="keyboard-key function-key submit-key" data-key="submit">提交</div>
                      </div>
                  </div>
             `;
@@ -2046,11 +2064,40 @@
             event.preventDefault();
             event.stopPropagation();
             
-            const key = event.target.getAttribute('data-key');
-            if (!key) return;
+            // 获取被点击的元素
+            let target = event.target;
+            
+            // 如果点击的不是键盘按键，尝试找到最近的键盘按键
+            if (!target.hasAttribute('data-key')) {
+                target = target.closest('.keyboard-key');
+            }
+            
+            if (!target || !target.hasAttribute('data-key')) {
+                console.log('未找到有效的键盘按键');
+                return;
+            }
+            
+            const key = target.getAttribute('data-key');
+            console.log('按键点击:', key);
             
             const input = document.getElementById('reading-input');
-            if (!input) return;
+            if (!input) {
+                console.log('未找到输入框');
+                return;
+            }
+            
+            // 添加视觉反馈
+            target.style.background = '#007bff';
+            target.style.color = 'white';
+            setTimeout(() => {
+                if (target.classList.contains('function-key')) {
+                    target.style.background = '';
+                    target.style.color = '';
+                } else {
+                    target.style.background = 'white';
+                    target.style.color = 'black';
+                }
+            }, 150);
             
             switch (key) {
                  case 'backspace':
