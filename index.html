@@ -1081,6 +1081,13 @@
             if (prevBtn) {
                 prevBtn.style.display = 'none';
             }
+            
+            // 重新启用虚拟键盘的提交按钮
+            const virtualSubmitBtn = document.querySelector('.submit-key');
+            if (virtualSubmitBtn) {
+                virtualSubmitBtn.style.opacity = '1';
+                virtualSubmitBtn.style.pointerEvents = 'auto';
+            }
         }
 
         // 生成选项
@@ -1209,14 +1216,103 @@
                 margin-right: 10px;
             `;
             
-            // 禁用系统键盘并在点击时显示虚拟键盘
-            input.readOnly = true;
-            input.addEventListener('click', () => {
-                showVirtualKeyboard();
-            });
-            input.addEventListener('focus', () => {
-                showVirtualKeyboard();
-            });
+            // 检测设备类型
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                           (('ontouchstart' in window) && window.innerWidth <= 1024) || 
+                           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+            
+            if (isMobile) {
+                // 移动设备：禁用系统键盘并显示虚拟键盘
+                input.readOnly = true;
+                input.addEventListener('click', () => {
+                    showVirtualKeyboard();
+                });
+                input.addEventListener('focus', () => {
+                    showVirtualKeyboard();
+                });
+            } else {
+                // 电脑设备：允许直接键盘输入
+                input.readOnly = false;
+                input.addEventListener('input', (e) => {
+                    // 实时转换罗马字为平假名
+                    const value = e.target.value;
+                    let converted = '';
+                    let remaining = value;
+                    
+                    // 从最长的可能匹配开始尝试转换
+                    while (remaining.length > 0) {
+                        let found = false;
+                        
+                        // 特殊处理n：只有在特定情况下才转换为ん
+                        if (remaining.startsWith('n')) {
+                            // 如果是nn，转换为ん
+                            if (remaining.startsWith('nn')) {
+                                converted += 'ん';
+                                remaining = remaining.substring(2);
+                                found = true;
+                            }
+                            // 如果n后面跟着辅音（除了y），转换为ん
+                            else if (remaining.length > 1) {
+                                const nextChar = remaining.charAt(1);
+                                if (nextChar && 'bcdfghjklmpqrstvwxz'.includes(nextChar) && nextChar !== 'y') {
+                                    converted += 'ん';
+                                    remaining = remaining.substring(1);
+                                    found = true;
+                                }
+                            }
+                        }
+                        
+                        // 如果n没有被特殊处理，尝试正常的罗马字匹配
+                        if (!found) {
+                            // 尝试从最长到最短的匹配
+                            for (let len = Math.min(remaining.length, 3); len > 0; len--) {
+                                const substr = remaining.substring(0, len);
+                                const hiragana = romajiToHiragana[substr];
+                                
+                                if (hiragana) {
+                                    converted += hiragana;
+                                    remaining = remaining.substring(len);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // 如果没有找到匹配，检查是否是部分输入
+                        if (!found) {
+                            // 检查当前输入是否是某个罗马字的开头
+                            let isPartial = false;
+                            for (const romaji in romajiToHiragana) {
+                                if (romaji.startsWith(remaining)) {
+                                    isPartial = true;
+                                    break;
+                                }
+                            }
+                            
+                            if (isPartial) {
+                                // 是部分输入，保留不转换
+                                break;
+                            } else {
+                                // 不是有效输入，跳过第一个字符
+                                remaining = remaining.substring(1);
+                            }
+                        }
+                    }
+                    
+                    // 更新输入框显示转换后的内容
+                    const finalValue = converted + remaining;
+                    if (finalValue !== value) {
+                        e.target.value = finalValue;
+                    }
+                });
+                
+                // 添加回车键提交功能
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkInputAnswer();
+                    }
+                });
+            }
             
             // 创建提交按钮
             const submitBtn = document.createElement('button');
@@ -1236,8 +1332,10 @@
             // 自动聚焦输入框
             setTimeout(() => input.focus(), 100);
             
-            // 创建虚拟键盘
-            createVirtualKeyboard();
+            // 只在移动设备上创建虚拟键盘
+            if (isMobile) {
+                createVirtualKeyboard();
+            }
         }
 
         // 选择选项
@@ -1308,7 +1406,16 @@
             // 禁用输入框和提交按钮
             input.disabled = true;
             const submitBtn = input.parentElement.querySelector('button');
-            submitBtn.disabled = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+            }
+            
+            // 禁用虚拟键盘的提交按钮
+            const virtualSubmitBtn = document.querySelector('.submit-key');
+            if (virtualSubmitBtn) {
+                virtualSubmitBtn.style.opacity = '0.5';
+                virtualSubmitBtn.style.pointerEvents = 'none';
+            }
             
             // 验证答案（支持语干部分和完整读音）
             let isCorrect = false;
@@ -2018,6 +2125,8 @@
             'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ', 'sya': 'しゃ', 'syu': 'しゅ', 'syo': 'しょ',
             'ja': 'じゃ', 'ju': 'じゅ', 'jo': 'じょ',
             'cha': 'ちゃ', 'chu': 'ちゅ', 'cho': 'ちょ',
+            'tya': 'ちゃ', 'tyu': 'ちゅ', 'tyo': 'ちょ',
+            'dya': 'ぢゃ', 'dyu': 'ぢゅ', 'dyo': 'ぢょ',
             'nya': 'にゃ', 'nyu': 'にゅ', 'nyo': 'にょ',
             'hya': 'ひゃ', 'hyu': 'ひゅ', 'hyo': 'ひょ',
             'bya': 'びゃ', 'byu': 'びゅ', 'byo': 'びょ',
