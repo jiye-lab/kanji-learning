@@ -2011,11 +2011,11 @@
             'ma': 'ま', 'mi': 'み', 'mu': 'む', 'me': 'め', 'mo': 'も',
             'ya': 'や', 'yu': 'ゆ', 'yo': 'よ',
             'ra': 'ら', 'ri': 'り', 'ru': 'る', 're': 'れ', 'ro': 'ろ',
-            'wa': 'わ', 'wi': 'ゐ', 'we': 'ゑ', 'wo': 'を', 'n': 'ん',
+            'wa': 'わ', 'wi': 'ゐ', 'we': 'ゑ', 'wo': 'を',
             // 拗音
             'kya': 'きゃ', 'kyu': 'きゅ', 'kyo': 'きょ',
             'gya': 'ぎゃ', 'gyu': 'ぎゅ', 'gyo': 'ぎょ',
-            'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ',
+            'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ', 'sya': 'しゃ', 'syu': 'しゅ', 'syo': 'しょ',
             'ja': 'じゃ', 'ju': 'じゅ', 'jo': 'じょ',
             'cha': 'ちゃ', 'chu': 'ちゅ', 'cho': 'ちょ',
             'nya': 'にゃ', 'nyu': 'にゅ', 'nyo': 'にょ',
@@ -2023,7 +2023,8 @@
             'bya': 'びゃ', 'byu': 'びゅ', 'byo': 'びょ',
             'pya': 'ぴゃ', 'pyu': 'ぴゅ', 'pyo': 'ぴょ',
             'mya': 'みゃ', 'myu': 'みゅ', 'myo': 'みょ',
-            'rya': 'りゃ', 'ryu': 'りゅ', 'ryo': 'りょ'
+            'rya': 'りゃ', 'ryu': 'りゅ', 'ryo': 'りょ',
+            'lya': 'りゃ', 'lyu': 'りゅ', 'lyo': 'りょ'
         };
         
         // 创建虚拟键盘
@@ -2037,7 +2038,6 @@
             virtualKeyboard.id = 'virtual-keyboard';
             
             virtualKeyboard.innerHTML = `
-                <div class="romaji-preview" id="romaji-preview">罗马字: <span id="romaji-text"></span></div>
                 <div class="keyboard-rows">
                      <div class="keyboard-row">
                          <div class="keyboard-key" data-key="q">q</div>
@@ -2072,8 +2072,8 @@
                          <div class="keyboard-key" data-key="m">m</div>
                      </div>
                      <div class="keyboard-row keyboard-row-function">
-                         <div class="keyboard-key function-key backspace-key" data-key="backspace">退格</div>
                          <div class="keyboard-key function-key submit-key" data-key="submit">提交</div>
+                         <div class="keyboard-key function-key backspace-key" data-key="backspace">退格</div>
                      </div>
                  </div>
             `;
@@ -2195,15 +2195,31 @@
             let converted = '';
             let remaining = currentRomajiInput;
             
-            // 特殊处理：连续的n
-            if (remaining === 'nn') {
-                converted = 'ん';
-                remaining = '';
-            } else {
-                // 从最长的可能匹配开始尝试转换
-                while (remaining.length > 0) {
-                    let found = false;
-                    
+            // 从最长的可能匹配开始尝试转换
+            while (remaining.length > 0) {
+                let found = false;
+                
+                // 特殊处理n：只有在特定情况下才转换为ん
+                if (remaining.startsWith('n')) {
+                    // 如果是nn，转换为ん
+                    if (remaining.startsWith('nn')) {
+                        converted += 'ん';
+                        remaining = remaining.substring(2);
+                        found = true;
+                    }
+                    // 如果n后面跟着辅音（除了y），转换为ん
+                    else if (remaining.length > 1) {
+                        const nextChar = remaining.charAt(1);
+                        if (nextChar && 'bcdfghjklmpqrstvwxz'.includes(nextChar) && nextChar !== 'y') {
+                            converted += 'ん';
+                            remaining = remaining.substring(1);
+                            found = true;
+                        }
+                    }
+                }
+                
+                // 如果n没有被特殊处理，尝试正常的罗马字匹配
+                if (!found) {
                     // 尝试从最长到最短的匹配
                     for (let len = Math.min(remaining.length, 3); len > 0; len--) {
                         const substr = remaining.substring(0, len);
@@ -2216,25 +2232,25 @@
                             break;
                         }
                     }
-                    
-                    // 如果没有找到匹配，检查是否是部分输入
-                    if (!found) {
-                        // 检查当前输入是否是某个罗马字的开头
-                        let isPartial = false;
-                        for (const romaji in romajiToHiragana) {
-                            if (romaji.startsWith(remaining)) {
-                                isPartial = true;
-                                break;
-                            }
-                        }
-                        
-                        if (isPartial) {
-                            // 是部分输入，保留不转换
+                }
+                
+                // 如果没有找到匹配，检查是否是部分输入
+                if (!found) {
+                    // 检查当前输入是否是某个罗马字的开头
+                    let isPartial = false;
+                    for (const romaji in romajiToHiragana) {
+                        if (romaji.startsWith(remaining)) {
+                            isPartial = true;
                             break;
-                        } else {
-                            // 不是有效输入，跳过第一个字符
-                            remaining = remaining.substring(1);
                         }
+                    }
+                    
+                    if (isPartial) {
+                        // 是部分输入，保留不转换
+                        break;
+                    } else {
+                        // 不是有效输入，跳过第一个字符
+                        remaining = remaining.substring(1);
                     }
                 }
             }
