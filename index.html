@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>日文汉字发音学习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .game-area {
+            margin-bottom: 30px;
+        }
+
+        .kanji-display {
+            font-size: 8em;
+            font-weight: bold;
+            color: #333;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .question {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        .option-btn:active {
+            transform: scale(0.95);
+        }
+
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 600;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.6);
+        }
+
+        .result-message {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .result-correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result-incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            font-size: 1.2em;
+            color: #666;
+            margin: 40px 0;
+        }
+
+        .kanji-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .kanji-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .reading-type {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+
+        .examples {
+            margin-top: 10px;
+            color: #666;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+                max-width: 100%;
+            }
+
+            .title {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .kanji-display {
+                font-size: 4em;
+                min-height: 80px;
+                margin: 20px 0;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .option-btn {
+                padding: 18px 15px;
+                font-size: 1.1em;
+                min-height: 60px;
+                border-radius: 12px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .btn {
+                padding: 15px 20px;
+                font-size: 1.1em;
+                min-height: 50px;
+                border-radius: 10px;
+            }
+
+            .search-container input {
+                width: 100%;
+                max-width: 300px;
+                padding: 12px 15px;
+                font-size: 1.1em;
+            }
+
+            .search-container button {
+                padding: 12px 18px;
+                font-size: 1em;
+            }
+
+            .kanji-info {
+                padding: 15px;
+                font-size: 0.95em;
+            }
+        }
+
+        /* 小屏手机优化 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .title {
+                font-size: 1.8em;
+            }
+
+            .kanji-display {
+                font-size: 3.5em;
+            }
+
+            .option-btn {
+                padding: 20px 15px;
+                font-size: 1em;
+            }
+
+            .btn {
+                padding: 16px 20px;
+                font-size: 1em;
+            }
+        }
+
+        /* 平板优化 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+                padding: 35px;
+            }
+
+            .options {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+
+            .option-btn {
+                padding: 16px 20px;
+                font-size: 1.15em;
+            }
+        }
+
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .option-btn {
+                min-height: 60px;
+                padding: 18px 15px;
+            }
+
+            .btn {
+                min-height: 50px;
+                padding: 15px 20px;
+            }
+
+            .option-btn:hover {
+                transform: none;
+            }
+
+            .btn:hover {
+                transform: none;
+            }
+        }
+
+        /* 横屏手机优化 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .kanji-display {
+                font-size: 3em;
+                margin: 15px 0;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            .stats {
+                flex-direction: row;
+                padding: 10px;
+            }
+
+            .controls {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+
+        /* 虚拟键盘样式 */
+        .virtual-keyboard {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-top: 2px solid #dee2e6;
+            padding: 15px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .virtual-keyboard.show {
+            transform: translateY(0);
+        }
+
+        .keyboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .keyboard-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .keyboard-close {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .keyboard-close:active {
+            transform: scale(0.95);
+        }
+
+        .keyboard-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .keyboard-key {
+            background: white;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 12px 8px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 32px;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .keyboard-key:active {
+            background: #e9ecef;
+            transform: scale(0.95);
+        }
+
+        .keyboard-key.function-key {
+            background: #6c757d;
+            color: white;
+            font-size: 0.9em;
+            min-width: 60px;
+        }
+
+        .keyboard-key.function-key:active {
+            background: #5a6268;
+        }
+
+        .keyboard-key.space-key {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .keyboard-key.submit-key {
+            background: #28a745;
+            color: white;
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .keyboard-key.submit-key:active {
+            background: #218838;
+        }
+
+        .keyboard-key.backspace-key {
+            background: #dc3545;
+            color: white;
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .keyboard-key.backspace-key:active {
+            background: #c82333;
+        }
+
+        .romaji-preview {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #1565c0;
+        }
+
+        /* 移动端键盘优化 */
+        @media (max-width: 768px) {
+            .virtual-keyboard {
+                padding: 10px;
+            }
+
+            .keyboard-key {
+                padding: 14px 6px;
+                font-size: 0.95em;
+                min-width: 28px;
+            }
+
+            .keyboard-row {
+                gap: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .keyboard-key {
+                padding: 16px 4px;
+                font-size: 0.9em;
+                min-width: 24px;
+            }
+
+            .keyboard-row {
+                gap: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">日文汉字发音学习</h1>
+            <p class="subtitle">学习日文汉字的音读和训读发音</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="correct-count">0</div>
+                <div class="stat-label">正确</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="total-count">0</div>
+                <div class="stat-label">总题数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="accuracy">0%</div>
+                <div class="stat-label">正确率</div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="loading" id="loading">正在加载汉字数据...</div>
+            
+            <div id="game-content" style="display: none;">
+                <div class="kanji-display" id="kanji-display">漢</div>
+                <div class="question" id="question">请选择这个汉字的正确发音：</div>
+                
+                <div class="options" id="options">
+                    <!-- 选项将通过JavaScript动态生成 -->
+                </div>
+
+                <div class="result-message" id="result-message" style="display: none;"></div>
+
+                <div class="kanji-info" id="kanji-info" style="display: none;">
+                    <!-- 汉字详细信息将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display: none;">下一题</button>
+            <button class="btn btn-secondary" id="restart-btn" onclick="restartGame()">重新开始</button>
+            <button class="btn btn-secondary" id="show-info-btn" onclick="toggleKanjiInfo()" style="display: none;">显示详情</button>
+            <button class="btn btn-secondary" id="mode-btn" onclick="toggleMode()">切换模式</button>
+        </div>
+        
+        <div class="search-container" style="margin-top: 20px; text-align: center;">
+            <div style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <input type="text" id="search-input" placeholder="搜索汉字、读音或含义..." 
+                       style="padding: 10px 15px; font-size: 1em; border: 2px solid #ddd; border-radius: 25px; 
+                              width: 250px; max-width: 80%; outline: none; transition: border-color 0.3s;" 
+                       onkeypress="handleSearchKeyPress(event)">
+                <button class="btn btn-primary" onclick="searchKanji()" 
+                        style="padding: 10px 20px; border-radius: 25px; font-size: 1em;">🔍 搜索</button>
+                <button class="btn btn-secondary" onclick="clearSearch()" 
+                        style="padding: 10px 15px; border-radius: 25px; font-size: 1em;">清除</button>
+            </div>
+            <div id="search-results" style="margin-top: 15px; max-height: 200px; overflow-y: auto; display: none;"></div>
+        </div>
+
+        <div id="mode-info" class="mode-info" style="margin-top: 20px; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 0.9em; color: #1565c0;">
+             当前模式：学习模式
+         </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let kanjiData = [];
+        let currentKanji = null;
+        let currentOptions = [];
+        let correctAnswer = '';
+        let gameStats = {
+            correct: 0,
+            total: 0
+        };
+        let answered = false;
+        let gameMode = 'study'; // 'study', 'example', 'input', 'plan'
+        let studyPlan = {
+            learnedWords: [], // 已学习的词汇
+            reviewSchedule: [], // 复习计划
+            currentDay: 0, // 当前学习天数
+            studyIndex: 0 // 学习进度索引
+        };
+        let currentExample = null;
+        let currentExampleKanji = null;
+        let exampleQuestions = [];
+        let studyIndex = 0;
+
+        // 切换游戏模式
+        function toggleMode() {
+            if (gameMode === 'study') {
+                gameMode = 'example';
+            } else if (gameMode === 'example') {
+                gameMode = 'input';
+            } else if (gameMode === 'input') {
+                gameMode = 'plan';
+            } else {
+                gameMode = 'study';
+            }
+            updateModeInfo();
+            if (gameMode === 'study') {
+                enhancedShowStudyMode();
+            } else if (gameMode === 'example') {
+                nextQuestion();
+            } else if (gameMode === 'input') {
+                nextQuestion();
+            } else {
+                showPlanMode();
+            }
+        }
+
+        // 更新模式信息显示
+        function updateModeInfo() {
+            const modeInfo = document.getElementById('mode-info');
+            if (gameMode === 'study') {
+                modeInfo.innerHTML = '<strong>当前模式：</strong>学习模式 - 浏览汉字发音和例词';
+            } else if (gameMode === 'example') {
+                modeInfo.innerHTML = '<strong>当前模式：</strong>复习测试 - 根据例词中的汉字选择正确发音';
+            } else if (gameMode === 'input') {
+                modeInfo.innerHTML = '<strong>当前模式：</strong>手动输入复习 - 根据例词中的汉字手动输入正确发音';
+            } else {
+                modeInfo.innerHTML = '<strong>当前模式：</strong>学习计划 - 制定每日学习目标和复习计划';
+            }
+        }
+
+        // 学习模式显示
+        function showStudyMode() {
+            if (kanjiData.length === 0) return;
+            
+            // 重置状态
+            document.getElementById('result-message').style.display = 'none';
+            document.getElementById('kanji-info').style.display = 'none';
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('question').textContent = '学习模式 - 浏览汉字发音和例词';
+            
+            // 显示当前汉字
+            currentKanji = kanjiData[studyIndex];
+            document.getElementById('kanji-display').textContent = currentKanji.kanji;
+            document.getElementById('kanji-display').style.fontSize = '8em';
+            
+            // 显示汉字详细信息
+            showKanjiInfo();
+            
+            // 显示导航按钮
+            document.getElementById('next-btn').style.display = 'inline-block';
+            document.getElementById('next-btn').textContent = '下一个汉字';
+            document.getElementById('show-info-btn').style.display = 'none';
+            
+            // 添加上一个按钮
+            let prevBtn = document.getElementById('prev-btn');
+            if (!prevBtn) {
+                prevBtn = document.createElement('button');
+                prevBtn.id = 'prev-btn';
+                prevBtn.className = 'btn btn-secondary';
+                prevBtn.textContent = '上一个汉字';
+                prevBtn.onclick = () => previousKanji();
+                document.querySelector('.controls').insertBefore(prevBtn, document.getElementById('next-btn'));
+            }
+            prevBtn.style.display = 'inline-block';
+        }
+        
+        // 上一个汉字
+        function previousKanji() {
+            if (gameMode !== 'study') return;
+            studyIndex = (studyIndex - 1 + kanjiData.length) % kanjiData.length;
+            studyPlan.studyIndex = studyIndex;
+            savePlan();
+            
+            // 直接显示指定汉字，不自动跳转到未学汉字
+            showStudyMode();
+            
+            // 为已学汉字添加状态显示
+            const kanjiInfo = document.getElementById('kanji-info');
+            if (kanjiInfo && kanjiInfo.style.display !== 'none') {
+                const currentKanjiChar = document.getElementById('kanji-display').textContent;
+                const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
+                
+                if (isLearned) {
+                    const statusDiv = document.createElement('div');
+                    statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
+                    statusDiv.style.marginTop = '10px';
+                    kanjiInfo.appendChild(statusDiv);
+                } else {
+                    const learnBtn = document.createElement('button');
+                    learnBtn.textContent = '✓ 标记为已学';
+                    learnBtn.className = 'btn';
+                    learnBtn.style.background = '#28a745';
+                    learnBtn.style.color = 'white';
+                    learnBtn.style.marginTop = '10px';
+                    learnBtn.onclick = () => {
+                        addToLearned(currentKanjiChar);
+                        learnBtn.textContent = '✓ 已学习';
+                        learnBtn.disabled = true;
+                        learnBtn.style.background = '#6c757d';
+                    };
+                    kanjiInfo.appendChild(learnBtn);
+                }
+            }
+        }
+
+        // 页面加载时初始化（移除重复的事件监听器）
+
+        // 加载汉字数据
+        async function loadKanjiData() {
+            try {
+                const response = await fetch('kanji_data_enhanced_hiragana.json');
+                kanjiData = await response.json();
+                
+                // 预处理例词数据
+                preprocessExampleData();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('game-content').style.display = 'block';
+                
+                // 加载学习计划并启动学习模式
+                loadPlan();
+                
+                // 默认启动学习模式，自动跳转到第一个未学汉字
+                enhancedShowStudyMode();
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('loading').textContent = '加载数据失败，请检查文件是否存在';
+            }
+        }
+
+        // 预处理例词数据
+        function preprocessExampleData() {
+            exampleQuestions = [];
+            
+            kanjiData.forEach(kanjiEntry => {
+                kanjiEntry.readings.forEach(reading => {
+                    if (reading.examples && reading.examples.length > 0) {
+                        reading.examples.forEach(example => {
+                            // 检查例词中是否包含当前汉字
+                            if (example.includes(kanjiEntry.kanji)) {
+                                exampleQuestions.push({
+                                    kanji: kanjiEntry.kanji,
+                                    example: example,
+                                    reading: reading.reading,
+                                    type: reading.type,
+                                    kanjiEntry: kanjiEntry
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            
+            console.log(`预处理完成，共生成 ${exampleQuestions.length} 个例词问题`);
+        }
+
+        // 生成下一题
+        function nextQuestion() {
+            if (gameMode === 'study') {
+                studyIndex = (studyIndex + 1) % kanjiData.length;
+                studyPlan.studyIndex = studyIndex;
+                savePlan();
+                
+                // 直接显示指定汉字，不自动跳转到未学汉字
+                showStudyMode();
+                
+                // 为已学汉字添加状态显示
+                const kanjiInfo = document.getElementById('kanji-info');
+                if (kanjiInfo && kanjiInfo.style.display !== 'none') {
+                    const currentKanjiChar = document.getElementById('kanji-display').textContent;
+                    const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
+                    
+                    if (isLearned) {
+                        const statusDiv = document.createElement('div');
+                        statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
+                        statusDiv.style.marginTop = '10px';
+                        kanjiInfo.appendChild(statusDiv);
+                    } else {
+                        const learnBtn = document.createElement('button');
+                        learnBtn.textContent = '✓ 标记为已学';
+                        learnBtn.className = 'btn';
+                        learnBtn.style.background = '#28a745';
+                        learnBtn.style.color = 'white';
+                        learnBtn.style.marginTop = '10px';
+                        learnBtn.onclick = () => {
+                            addToLearned(currentKanjiChar);
+                            learnBtn.textContent = '✓ 已学习';
+                            learnBtn.disabled = true;
+                            learnBtn.style.background = '#6c757d';
+                        };
+                        kanjiInfo.appendChild(learnBtn);
+                    }
+                }
+                return;
+            }
+            
+            if (gameMode === 'input') {
+                generateInputQuestion();
+            } else {
+                generateExampleQuestion();
+            }
+        }
+
+        // 生成汉字发音测试题
+        function generateKanjiQuestion() {
+            if (kanjiData.length === 0) return;
+
+            // 重置状态
+            resetQuestionState();
+
+            // 随机选择一个汉字
+            currentKanji = kanjiData[Math.floor(Math.random() * kanjiData.length)];
+            
+            // 显示汉字
+            document.getElementById('kanji-display').textContent = currentKanji.kanji;
+            document.getElementById('question').textContent = '请选择这个汉字的正确发音：';
+
+            // 随机选择一个读音作为正确答案
+            const readings = currentKanji.readings;
+            const correctReading = readings[Math.floor(Math.random() * readings.length)];
+            correctAnswer = correctReading.reading;
+
+            // 生成选项（1个正确答案 + 3个错误答案）
+            generateOptions(correctAnswer);
+        }
+
+        // 生成例词测试题（仅复习已学汉字）
+        function generateExampleQuestion() {
+            // 筛选已学汉字的例词
+            const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
+            const learnedExamples = exampleQuestions.filter(q => learnedKanji.includes(q.kanji));
+            
+            if (learnedExamples.length === 0) {
+                document.getElementById('kanji-display').textContent = '📚';
+                document.getElementById('kanji-display').style.fontSize = '4em';
+                document.getElementById('question').textContent = '还没有学习过的汉字，请先在学习模式中学习一些汉字！';
+                document.getElementById('options').innerHTML = '';
+                document.getElementById('result-message').style.display = 'none';
+                document.getElementById('kanji-info').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('show-info-btn').style.display = 'none';
+                const prevBtn = document.getElementById('prev-btn');
+                if (prevBtn) prevBtn.style.display = 'none';
+                return;
+            }
+
+            // 重置状态
+            resetQuestionState();
+
+            // 优先选择今日需要复习的汉字
+            const today = new Date().toDateString();
+            const todayReview = studyPlan.reviewSchedule.filter(item => 
+                new Date(item.reviewDate).toDateString() === today
+            );
+            
+            let availableExamples = learnedExamples;
+            if (todayReview.length > 0) {
+                const todayKanji = todayReview.map(item => item.kanji);
+                const todayExamples = learnedExamples.filter(q => todayKanji.includes(q.kanji));
+                if (todayExamples.length > 0) {
+                    availableExamples = todayExamples;
+                }
+            }
+
+            // 随机选择一个例词问题
+            currentExample = availableExamples[Math.floor(Math.random() * availableExamples.length)];
+            currentKanji = currentExample.kanjiEntry;
+            correctAnswer = currentExample.reading;
+
+            // 显示例词，高亮目标汉字
+            const highlightedExample = currentExample.example.replace(
+                new RegExp(currentExample.kanji, 'g'), 
+                `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
+            );
+            document.getElementById('kanji-display').innerHTML = highlightedExample;
+            document.getElementById('kanji-display').style.fontSize = '3em';
+            
+            // 检查是否是今日复习任务
+            const isReviewTask = todayReview.some(item => item.kanji === currentExample.kanji);
+            const reviewText = isReviewTask ? ' 🔄 (复习任务)' : '';
+            const typeText = currentExample.type === 'on' ? '音读' : '训读';
+            document.getElementById('question').innerHTML = `请选择例词"${currentExample.example}"中<strong>${currentExample.kanji}</strong>字的${typeText}发音：${reviewText}`;
+
+            // 生成选项
+            generateExampleOptions(correctAnswer, currentExample.type);
+        }
+
+        // 生成手动输入测试题（仅复习已学汉字）
+        function generateInputQuestion() {
+            // 筛选已学汉字的例词
+            const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
+            const learnedExamples = exampleQuestions.filter(q => learnedKanji.includes(q.kanji));
+            
+            if (learnedExamples.length === 0) {
+                document.getElementById('kanji-display').textContent = '📚';
+                document.getElementById('kanji-display').style.fontSize = '4em';
+                document.getElementById('question').textContent = '还没有学习过的汉字，请先在学习模式中学习一些汉字！';
+                document.getElementById('options').innerHTML = '';
+                document.getElementById('result-message').style.display = 'none';
+                document.getElementById('kanji-info').style.display = 'none';
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('show-info-btn').style.display = 'none';
+                const prevBtn = document.getElementById('prev-btn');
+                if (prevBtn) prevBtn.style.display = 'none';
+                return;
+            }
+
+            // 重置状态
+            resetQuestionState();
+
+            // 优先选择今日需要复习的汉字
+            const today = new Date().toDateString();
+            const todayReview = studyPlan.reviewSchedule.filter(item => 
+                new Date(item.reviewDate).toDateString() === today
+            );
+            
+            let availableExamples = learnedExamples;
+            if (todayReview.length > 0) {
+                const todayKanji = todayReview.map(item => item.kanji);
+                const todayExamples = learnedExamples.filter(q => todayKanji.includes(q.kanji));
+                if (todayExamples.length > 0) {
+                    availableExamples = todayExamples;
+                }
+            }
+
+            // 随机选择一个例词问题
+            currentExample = availableExamples[Math.floor(Math.random() * availableExamples.length)];
+            currentKanji = currentExample.kanjiEntry;
+            correctAnswer = currentExample.reading;
+
+            // 显示例词，高亮目标汉字
+            const highlightedExample = currentExample.example.replace(
+                new RegExp(currentExample.kanji, 'g'), 
+                `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
+            );
+            document.getElementById('kanji-display').innerHTML = highlightedExample;
+            document.getElementById('kanji-display').style.fontSize = '3em';
+            
+            // 检查是否是今日复习任务
+            const isReviewTask = todayReview.some(item => item.kanji === currentExample.kanji);
+            const reviewText = isReviewTask ? ' 🔄 (复习任务)' : '';
+            const typeText = currentExample.type === 'on' ? '音读' : '训读';
+            document.getElementById('question').innerHTML = `请输入例词"${currentExample.example}"中<strong>${currentExample.kanji}</strong>字的${typeText}发音：${reviewText}`;
+
+            // 生成输入界面
+            generateInputInterface();
+        }
+
+        // 重置问题状态
+        function resetQuestionState() {
+            answered = false;
+            document.getElementById('result-message').style.display = 'none';
+            document.getElementById('kanji-info').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('next-btn').textContent = '下一题';
+            document.getElementById('show-info-btn').style.display = 'none';
+            document.getElementById('kanji-display').style.fontSize = '8em';
+            
+            // 隐藏上一个按钮（仅在学习模式显示）
+            const prevBtn = document.getElementById('prev-btn');
+            if (prevBtn) {
+                prevBtn.style.display = 'none';
+            }
+        }
+
+        // 生成选项
+        function generateOptions(correct) {
+            const options = [correct];
+            const allReadings = [];
+            
+            // 收集所有可能的读音
+            kanjiData.forEach(kanji => {
+                kanji.readings.forEach(reading => {
+                    if (reading.reading !== correct && !allReadings.includes(reading.reading)) {
+                        allReadings.push(reading.reading);
+                    }
+                });
+            });
+            
+            // 随机选择3个错误答案
+            while (options.length < 4 && allReadings.length > 0) {
+                const randomIndex = Math.floor(Math.random() * allReadings.length);
+                const randomReading = allReadings[randomIndex];
+                options.push(randomReading);
+                allReadings.splice(randomIndex, 1);
+            }
+            
+            // 打乱选项顺序
+            currentOptions = shuffleArray(options);
+            displayOptions();
+        }
+
+        // 生成例词模式的选项
+        function generateExampleOptions(correct, readingType) {
+            const options = [correct];
+            const sameTypeReadings = [];
+            
+            // 收集同类型的读音（音读或训读）
+            kanjiData.forEach(kanji => {
+                kanji.readings.forEach(reading => {
+                    if (reading.type === readingType && 
+                        reading.reading !== correct && 
+                        !sameTypeReadings.includes(reading.reading)) {
+                        sameTypeReadings.push(reading.reading);
+                    }
+                });
+            });
+            
+            // 随机选择3个同类型的错误答案
+            while (options.length < 4 && sameTypeReadings.length > 0) {
+                const randomIndex = Math.floor(Math.random() * sameTypeReadings.length);
+                const randomReading = sameTypeReadings[randomIndex];
+                options.push(randomReading);
+                sameTypeReadings.splice(randomIndex, 1);
+            }
+            
+            // 如果同类型读音不够，从其他类型补充
+            if (options.length < 4) {
+                const allReadings = [];
+                kanjiData.forEach(kanji => {
+                    kanji.readings.forEach(reading => {
+                        if (reading.reading !== correct && 
+                            !options.includes(reading.reading) &&
+                            !allReadings.includes(reading.reading)) {
+                            allReadings.push(reading.reading);
+                        }
+                    });
+                });
+                
+                while (options.length < 4 && allReadings.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * allReadings.length);
+                    options.push(allReadings[randomIndex]);
+                    allReadings.splice(randomIndex, 1);
+                }
+            }
+            
+            // 打乱选项顺序
+            currentOptions = shuffleArray(options);
+            
+            // 显示选项
+            displayOptions();
+        }
+
+        // 数组打乱函数
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // 显示选项
+        function displayOptions() {
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            currentOptions.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => selectOption(option, button);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // 生成输入界面
+        function generateInputInterface() {
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            // 创建输入框
+            const inputDiv = document.createElement('div');
+            inputDiv.style.cssText = 'margin: 20px 0; text-align: center;';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'reading-input';
+            input.placeholder = '请输入读音（平假名）';
+            input.style.cssText = `
+                padding: 15px 20px;
+                font-size: 1.2em;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                width: 300px;
+                max-width: 80%;
+                text-align: center;
+                margin-right: 10px;
+            `;
+            
+            // 禁用系统键盘并在点击时显示虚拟键盘
+            input.readOnly = true;
+            input.addEventListener('click', () => {
+                showVirtualKeyboard();
+            });
+            input.addEventListener('focus', () => {
+                showVirtualKeyboard();
+            });
+            
+            // 创建提交按钮
+            const submitBtn = document.createElement('button');
+            submitBtn.textContent = '提交';
+            submitBtn.className = 'btn btn-primary';
+            submitBtn.style.cssText = `
+                padding: 15px 25px;
+                font-size: 1.1em;
+                margin-left: 10px;
+            `;
+            submitBtn.onclick = () => checkInputAnswer();
+            
+            inputDiv.appendChild(input);
+            inputDiv.appendChild(submitBtn);
+            optionsContainer.appendChild(inputDiv);
+            
+            // 自动聚焦输入框
+            setTimeout(() => input.focus(), 100);
+            
+            // 创建虚拟键盘
+            createVirtualKeyboard();
+        }
+
+        // 选择选项
+        function selectOption(selectedAnswer, buttonElement) {
+            if (answered) return;
+
+            answered = true;
+            gameStats.total++;
+
+            // 禁用所有选项按钮
+            const allButtons = document.querySelectorAll('.option-btn');
+            allButtons.forEach(btn => btn.disabled = true);
+
+            // 显示正确答案和用户选择
+            allButtons.forEach(btn => {
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (btn === buttonElement && btn.textContent !== correctAnswer) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // 显示结果消息
+            const resultMessage = document.getElementById('result-message');
+            if (selectedAnswer === correctAnswer) {
+                gameStats.correct++;
+                resultMessage.textContent = '正确！';
+                resultMessage.className = 'result-message result-correct';
+                
+                // 如果是复习模式且答对了，完成复习任务
+                if (gameMode === 'example' && currentExample) {
+                    completeReview(currentExample.kanji);
+                }
+                
+                // 答对后0.3秒自动跳转下一题
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300);
+            } else {
+                resultMessage.textContent = `错误！正确答案是：${correctAnswer}`;
+                resultMessage.className = 'result-message result-incorrect';
+                
+                // 答错时显示控制按钮
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('show-info-btn').style.display = 'inline-block';
+            }
+            resultMessage.style.display = 'block';
+
+            // 更新统计信息
+            updateStats();
+        }
+
+        // 检查输入答案
+        function checkInputAnswer() {
+            if (answered) return;
+            
+            const input = document.getElementById('reading-input');
+            const userInput = input.value.trim();
+            
+            if (!userInput) {
+                alert('请输入读音');
+                return;
+            }
+            
+            answered = true;
+            gameStats.total++;
+            
+            // 禁用输入框和提交按钮
+            input.disabled = true;
+            const submitBtn = input.parentElement.querySelector('button');
+            submitBtn.disabled = true;
+            
+            // 验证答案（支持语干部分和完整读音）
+            let isCorrect = false;
+            
+            // 检查是否匹配完整读音
+            if (userInput === correctAnswer) {
+                isCorrect = true;
+            } else {
+                // 检查是否匹配语干部分（去掉送假名）
+                // 找到汉字在例词中的位置，提取对应的读音部分
+                if (currentExample && currentExample.kanji && currentExample.word && currentExample.reading) {
+                    const kanjiIndex = currentExample.word.indexOf(currentExample.kanji);
+                    if (kanjiIndex !== -1) {
+                        // 计算汉字对应的读音长度（简单估算）
+                        const wordLength = currentExample.word.length;
+                        const readingLength = currentExample.reading.length;
+                        const kanjiLength = currentExample.kanji.length;
+                        
+                        // 提取汉字部分的读音（去掉可能的送假名）
+                        let kanjiReading = '';
+                        if (kanjiIndex === 0) {
+                            // 汉字在开头，取前面部分
+                            const estimatedLength = Math.floor(readingLength * kanjiLength / wordLength);
+                            kanjiReading = currentExample.reading.substring(0, Math.max(1, estimatedLength));
+                        } else {
+                            // 汉字在中间或末尾，需要更复杂的处理
+                            // 简化处理：如果用户输入是正确答案的子串，也认为正确
+                            if (correctAnswer.includes(userInput) && userInput.length >= 1) {
+                                isCorrect = true;
+                            }
+                        }
+                        
+                        // 检查是否匹配提取的汉字读音
+                        if (kanjiReading && userInput === kanjiReading) {
+                            isCorrect = true;
+                        }
+                    }
+                }
+                
+                // 额外检查：如果用户输入是正确答案的开头部分（至少2个字符），也认为正确
+                if (!isCorrect && userInput.length >= 2 && correctAnswer.startsWith(userInput)) {
+                    isCorrect = true;
+                }
+            }
+            
+            // 显示结果
+            const resultMessage = document.getElementById('result-message');
+            if (isCorrect) {
+                gameStats.correct++;
+                resultMessage.textContent = '正确！';
+                resultMessage.className = 'result-message result-correct';
+                
+                // 如果是复习模式且答对了，完成复习任务
+                if (gameMode === 'input' && currentExample) {
+                    completeReview(currentExample.kanji);
+                }
+                
+                // 答对后0.3秒自动跳转下一题
+                setTimeout(() => {
+                    nextQuestion();
+                }, 300);
+            } else {
+                resultMessage.textContent = `错误！正确读音是：${correctAnswer}`;
+                resultMessage.className = 'result-message result-incorrect';
+                
+                // 答错时显示控制按钮
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('show-info-btn').style.display = 'inline-block';
+            }
+            resultMessage.style.display = 'block';
+            
+            // 更新统计信息
+            updateStats();
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('correct-count').textContent = gameStats.correct;
+            document.getElementById('total-count').textContent = gameStats.total;
+            
+            const accuracy = gameStats.total > 0 ? Math.round((gameStats.correct / gameStats.total) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        // 显示/隐藏汉字详情
+        function toggleKanjiInfo() {
+            const infoDiv = document.getElementById('kanji-info');
+            if (infoDiv.style.display === 'none') {
+                showKanjiInfo();
+                document.getElementById('show-info-btn').textContent = '隐藏详情';
+            } else {
+                infoDiv.style.display = 'none';
+                document.getElementById('show-info-btn').textContent = '显示详情';
+            }
+        }
+
+        // 显示汉字详情
+        function showKanjiInfo() {
+            const infoDiv = document.getElementById('kanji-info');
+            let html = `<h3>汉字：${currentKanji.kanji}</h3>`;
+            
+            if (currentKanji.variant) {
+                html += `<p><strong>异体字：</strong>${currentKanji.variant}</p>`;
+            }
+
+            html += '<div>';
+            
+            // 分别处理音读和训读
+            const onReadings = currentKanji.readings.filter(r => r.type === 'on');
+            const kunReadings = currentKanji.readings.filter(r => r.type === 'kun');
+            
+            // 显示音读
+            onReadings.forEach(reading => {
+                html += `
+                    <div style="margin: 10px 0; padding: 10px; border-left: 3px solid #667eea;">
+                        <span class="reading-type">音读</span>
+                        <strong>${reading.reading}</strong>
+                        ${reading.okurigana_pattern ? `(${reading.okurigana_pattern})` : ''}
+                        <div class="examples">例词：${reading.examples.join('、')}</div>
+                    </div>
+                `;
+            });
+            
+            // 合并处理训读
+            const mergedKunReadings = mergeKunReadings(kunReadings);
+            mergedKunReadings.forEach(reading => {
+                html += `
+                    <div style="margin: 10px 0; padding: 10px; border-left: 3px solid #667eea;">
+                        <span class="reading-type">训读</span>
+                        <strong>${reading.reading}</strong>
+                        <div class="examples">例词：${reading.examples.join('、')}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+
+            if (currentKanji.notes) {
+                html += `<p><strong>注释：</strong>${currentKanji.notes}</p>`;
+            }
+            
+            // 检查并显示异体字备注
+            if (currentKanji.variant) {
+                html += `
+                    <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+                        <p style="margin: 0; color: #856404; font-size: 0.9em;">
+                            <strong>💡 异体字提醒：</strong>此汉字有异体字 <strong>${currentKanji.variant}</strong>，在不同的文献或地区可能会看到这种写法。
+                        </p>
+                    </div>
+                `;
+            }
+
+            infoDiv.innerHTML = html;
+            infoDiv.style.display = 'block';
+        }
+        
+        // 合并相同语干的训读
+        function mergeKunReadings(kunReadings) {
+            const merged = [];
+            const processed = new Set();
+            
+            kunReadings.forEach(reading => {
+                if (processed.has(reading.reading)) return;
+                
+                // 查找相同语干的读音
+                const stem = extractStem(reading);
+                const sameStems = kunReadings.filter(r => 
+                    !processed.has(r.reading) && extractStem(r) === stem
+                );
+                
+                if (sameStems.length > 1) {
+                    // 合并显示，只显示语干部分
+            const allExamples = [];
+            sameStems.forEach(r => {
+                if (r.examples) allExamples.push(...r.examples);
+                processed.add(r.reading);
+            });
+            
+            merged.push({
+                reading: stem,
+                examples: [...new Set(allExamples)] // 去重
+            });
+                } else {
+                    // 单独显示，也只显示语干部分
+                    merged.push({
+                        reading: stem,
+                        examples: reading.examples || []
+                    });
+                    processed.add(reading.reading);
+                }
+            });
+            
+            return merged;
+        }
+        
+        // 提取语干（使用okurigana_pattern中的･分隔符）
+        function extractStem(readingObj) {
+            // 如果有okurigana_pattern且包含･分隔符，直接提取语干
+            if (readingObj.okurigana_pattern && readingObj.okurigana_pattern.includes('･')) {
+                return readingObj.okurigana_pattern.split('･')[0];
+            }
+            // 如果没有okurigana_pattern，返回完整读音作为语干
+            return readingObj.reading;
+        }
+
+        // 重新开始游戏
+        function restartGame() {
+            gameStats.correct = 0;
+            gameStats.total = 0;
+            updateStats();
+            nextQuestion();
+        }
+
+        // 显示计划模式
+        function showPlanMode() {
+            document.getElementById('result-message').style.display = 'none';
+            document.getElementById('kanji-info').style.display = 'none';
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('question').textContent = '学习计划设置';
+            document.getElementById('kanji-display').style.fontSize = '2em';
+            document.getElementById('kanji-display').innerHTML = `
+                <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 20px; color: #333;">📚 学习计划管理</h3>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 15px;">📊 学习统计</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                            <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #28a745;">${studyPlan.learnedWords.length}</div>
+                                <div style="color: #666; font-size: 0.9em;">已学汉字</div>
+                            </div>
+                            <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5em; font-weight: bold; color: #dc3545;">${getTodayReviewCount()}</div>
+                                <div style="color: #666; font-size: 0.9em;">今日复习</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #667eea; margin-bottom: 15px;">🔄 艾宾浩斯复习计划</h4>
+                        <div style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                            复习间隔：1天 → 3天 → 7天 → 15天 → 30天
+                        </div>
+                        <div id="review-schedule" style="max-height: 200px; overflow-y: auto;">
+                            ${getReviewScheduleHTML()}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 隐藏不需要的按钮
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('show-info-btn').style.display = 'none';
+            const prevBtn = document.getElementById('prev-btn');
+            if (prevBtn) prevBtn.style.display = 'none';
+        }
+
+
+
+        // 获取今日复习数量
+        function getTodayReviewCount() {
+            const today = new Date().toDateString();
+            return studyPlan.reviewSchedule.filter(item => 
+                new Date(item.reviewDate).toDateString() === today
+            ).length;
+        }
+
+        // 获取复习计划HTML
+        function getReviewScheduleHTML() {
+            if (studyPlan.reviewSchedule.length === 0) {
+                return '<div style="color: #999; text-align: center; padding: 20px;">暂无复习计划</div>';
+            }
+            
+            const today = new Date();
+            const upcoming = studyPlan.reviewSchedule
+                .filter(item => new Date(item.reviewDate) >= today)
+                .sort((a, b) => new Date(a.reviewDate) - new Date(b.reviewDate))
+                .slice(0, 10);
+            
+            return upcoming.map(item => {
+                const date = new Date(item.reviewDate);
+                const isToday = date.toDateString() === today.toDateString();
+                const dateStr = date.toLocaleDateString('zh-CN');
+                const kanjiInfo = kanjiData.find(k => k.kanji === item.kanji);
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; 
+                                padding: 8px 12px; margin: 5px 0; background: ${isToday ? '#fff3cd' : 'white'}; 
+                                border-radius: 5px; border-left: 3px solid ${isToday ? '#ffc107' : '#667eea'};">
+                        <span style="font-weight: bold; font-size: 1.2em;">${item.kanji}</span>
+                        <span style="color: #666; font-size: 0.9em;">${dateStr} ${isToday ? '(今天)' : ''}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 艾宾浩斯记忆曲线间隔（天数）
+        const EBBINGHAUS_INTERVALS = [1, 3, 7, 15, 30];
+
+        // 添加汉字到学习计划
+        function addToLearned(kanji) {
+            if (!studyPlan.learnedWords.find(item => item.kanji === kanji)) {
+                const learnedItem = {
+                    kanji: kanji,
+                    learnDate: new Date().toISOString(),
+                    reviewCount: 0,
+                    nextReviewDate: getNextReviewDate(0)
+                };
+                
+                studyPlan.learnedWords.push(learnedItem);
+                scheduleReview(learnedItem);
+                savePlan();
+            }
+        }
+
+        // 获取下次复习日期
+        function getNextReviewDate(reviewCount) {
+            const intervalIndex = Math.min(reviewCount, EBBINGHAUS_INTERVALS.length - 1);
+            const interval = EBBINGHAUS_INTERVALS[intervalIndex];
+            const nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + interval);
+            return nextDate.toISOString();
+        }
+
+        // 安排复习
+        function scheduleReview(learnedItem) {
+            const reviewItem = {
+                kanji: learnedItem.kanji,
+                reviewDate: learnedItem.nextReviewDate,
+                reviewCount: learnedItem.reviewCount
+            };
+            
+            // 移除旧的复习计划
+            studyPlan.reviewSchedule = studyPlan.reviewSchedule.filter(
+                item => item.kanji !== learnedItem.kanji || item.reviewCount !== learnedItem.reviewCount
+            );
+            
+            // 添加新的复习计划
+            studyPlan.reviewSchedule.push(reviewItem);
+        }
+
+        // 完成复习
+        function completeReview(kanji) {
+            const learnedItem = studyPlan.learnedWords.find(item => item.kanji === kanji);
+            if (learnedItem) {
+                learnedItem.reviewCount++;
+                learnedItem.nextReviewDate = getNextReviewDate(learnedItem.reviewCount);
+                
+                // 如果还需要继续复习，安排下次复习
+                if (learnedItem.reviewCount < EBBINGHAUS_INTERVALS.length) {
+                    scheduleReview(learnedItem);
+                }
+                
+                // 移除今天的复习任务
+                const today = new Date().toDateString();
+                studyPlan.reviewSchedule = studyPlan.reviewSchedule.filter(
+                    item => !(item.kanji === kanji && new Date(item.reviewDate).toDateString() === today)
+                );
+                
+                savePlan();
+            }
+        }
+
+        // 保存学习计划
+        function savePlan() {
+            localStorage.setItem('kanjiStudyPlan', JSON.stringify(studyPlan));
+        }
+
+        // 加载学习计划
+        function loadPlan() {
+            const saved = localStorage.getItem('kanjiStudyPlan');
+            if (saved) {
+                studyPlan = { ...studyPlan, ...JSON.parse(saved) };
+            }
+        }
+
+        // 修改学习模式，添加学习进度跟踪
+        function enhancedShowStudyMode() {
+            // 自动跳转到第一个未学的汉字
+            findFirstUnlearnedKanji();
+            
+            showStudyMode();
+            
+            // 添加"标记为已学"按钮
+            const kanjiInfo = document.getElementById('kanji-info');
+            if (kanjiInfo && kanjiInfo.style.display !== 'none') {
+                const currentKanjiChar = document.getElementById('kanji-display').textContent;
+                const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
+                
+                if (!isLearned) {
+                    const learnBtn = document.createElement('button');
+                    learnBtn.textContent = '✓ 标记为已学';
+                    learnBtn.className = 'btn';
+                    learnBtn.style.background = '#28a745';
+                    learnBtn.style.color = 'white';
+                    learnBtn.style.marginTop = '10px';
+                    learnBtn.onclick = () => {
+                        addToLearned(currentKanjiChar);
+                        learnBtn.textContent = '✓ 已学习';
+                        learnBtn.disabled = true;
+                        learnBtn.style.background = '#6c757d';
+                        // 标记为已学后，自动跳转到下一个未学汉字
+                        setTimeout(() => {
+                            findFirstUnlearnedKanji();
+                            enhancedShowStudyMode();
+                        }, 500);
+                    };
+                    kanjiInfo.appendChild(learnBtn);
+                } else {
+                    const statusDiv = document.createElement('div');
+                    statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
+                    statusDiv.style.marginTop = '10px';
+                    kanjiInfo.appendChild(statusDiv);
+                }
+            }
+        }
+        
+        // 查找第一个未学的汉字
+        function findFirstUnlearnedKanji() {
+            if (kanjiData.length === 0) return;
+            
+            const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
+            
+            // 总是从头开始查找第一个未学的汉字
+            for (let i = 0; i < kanjiData.length; i++) {
+                const kanji = kanjiData[i].kanji;
+                
+                if (!learnedKanji.includes(kanji)) {
+                    studyIndex = i;
+                    studyPlan.studyIndex = i;
+                    savePlan();
+                    return;
+                }
+            }
+            
+            // 如果所有汉字都已学习，从头开始
+            studyIndex = 0;
+            studyPlan.studyIndex = 0;
+            savePlan();
+        }
+
+        // 工具函数：打乱数组
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // 搜索汉字功能
+        function searchKanji() {
+            const searchTerm = document.getElementById('search-input').value.trim();
+            if (!searchTerm) {
+                alert('请输入搜索内容');
+                return;
+            }
+            
+            const results = [];
+            const searchLower = searchTerm.toLowerCase();
+            
+            kanjiData.forEach((kanjiEntry, index) => {
+                let matchScore = 0;
+                let matchType = '';
+                
+                // 搜索汉字本身
+                if (kanjiEntry.kanji.includes(searchTerm)) {
+                    matchScore = 100;
+                    matchType = '汉字匹配';
+                }
+                // 搜索读音
+                else if (kanjiEntry.readings.some(reading => 
+                    reading.reading.toLowerCase().includes(searchLower))) {
+                    matchScore = 80;
+                    matchType = '读音匹配';
+                }
+                // 搜索例词
+                else if (kanjiEntry.readings.some(reading => 
+                    reading.examples && reading.examples.some(example => 
+                        example.toLowerCase().includes(searchLower)))) {
+                    matchScore = 60;
+                    matchType = '例词匹配';
+                }
+                // 搜索含义（如果有notes字段）
+                else if (kanjiEntry.notes && kanjiEntry.notes.toLowerCase().includes(searchLower)) {
+                    matchScore = 40;
+                    matchType = '含义匹配';
+                }
+                
+                if (matchScore > 0) {
+                    results.push({
+                        kanji: kanjiEntry.kanji,
+                        index: index,
+                        score: matchScore,
+                        type: matchType,
+                        entry: kanjiEntry
+                    });
+                }
+            });
+            
+            // 按匹配分数排序
+            results.sort((a, b) => b.score - a.score);
+            
+            displaySearchResults(results, searchTerm);
+        }
+        
+        // 显示搜索结果
+        function displaySearchResults(results, searchTerm) {
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: #666;">
+                        未找到包含"${searchTerm}"的汉字
+                    </div>
+                `;
+                resultsContainer.style.display = 'block';
+                return;
+            }
+            
+            const maxResults = 10; // 最多显示10个结果
+            const displayResults = results.slice(0, maxResults);
+            
+            let html = `
+                <div style="padding: 10px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px;">
+                    <strong>搜索结果：</strong>找到 ${results.length} 个匹配项${results.length > maxResults ? `（显示前${maxResults}个）` : ''}
+                </div>
+            `;
+            
+            displayResults.forEach(result => {
+                const readings = result.entry.readings.map(r => r.reading).join('、');
+                const examples = result.entry.readings
+                    .flatMap(r => r.examples || [])
+                    .slice(0, 3)
+                    .join('、');
+                
+                html += `
+                    <div class="search-result-item" 
+                         style="padding: 12px; margin: 8px 0; background: white; border-radius: 8px; 
+                                border-left: 4px solid #667eea; cursor: pointer; transition: all 0.3s;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.1);" 
+                         onclick="jumpToKanji(${result.index})" 
+                         onmouseover="this.style.backgroundColor='#f0f4ff'; this.style.transform='translateX(5px)'" 
+                         onmouseout="this.style.backgroundColor='white'; this.style.transform='translateX(0)'">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span style="font-size: 2em; font-weight: bold; color: #333;">${result.kanji}</span>
+                                <div>
+                                    <div style="color: #667eea; font-weight: bold; margin-bottom: 4px;">${readings}</div>
+                                    ${examples ? `<div style="color: #666; font-size: 0.9em;">例词：${examples}</div>` : ''}
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="background: #667eea; color: white; padding: 4px 8px; 
+                                           border-radius: 12px; font-size: 0.8em;">${result.type}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = html;
+            resultsContainer.style.display = 'block';
+        }
+        
+        // 跳转到指定汉字
+        function jumpToKanji(index) {
+            studyIndex = index;
+            studyPlan.studyIndex = index;
+            savePlan();
+            
+            // 切换到学习模式
+            if (gameMode !== 'study') {
+                gameMode = 'study';
+                updateModeInfo();
+            }
+            
+            // 直接显示指定汉字，不自动跳转到未学汉字
+            showStudyMode();
+            
+            // 为已学汉字添加状态显示
+            const kanjiInfo = document.getElementById('kanji-info');
+            if (kanjiInfo && kanjiInfo.style.display !== 'none') {
+                const currentKanjiChar = document.getElementById('kanji-display').textContent;
+                const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
+                
+                if (isLearned) {
+                    const statusDiv = document.createElement('div');
+                    statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
+                    statusDiv.style.marginTop = '10px';
+                    kanjiInfo.appendChild(statusDiv);
+                } else {
+                    const learnBtn = document.createElement('button');
+                    learnBtn.textContent = '✓ 标记为已学';
+                    learnBtn.className = 'btn';
+                    learnBtn.style.background = '#28a745';
+                    learnBtn.style.color = 'white';
+                    learnBtn.style.marginTop = '10px';
+                    learnBtn.onclick = () => {
+                        addToLearned(currentKanjiChar);
+                        learnBtn.textContent = '✓ 已学习';
+                        learnBtn.disabled = true;
+                        learnBtn.style.background = '#6c757d';
+                    };
+                    kanjiInfo.appendChild(learnBtn);
+                }
+            }
+            
+            clearSearch();
+            
+            // 滚动到游戏区域
+            document.querySelector('.game-area').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 清除搜索
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-results').style.display = 'none';
+        }
+        
+        // 处理搜索框回车键
+        function handleSearchKeyPress(event) {
+            if (event.key === 'Enter') {
+                searchKanji();
+            }
+        }
+        
+        // 移动端优化函数
+        function initMobileOptimizations() {
+            // 防止双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // 防止长按选择文本
+            document.addEventListener('selectstart', function(e) {
+                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                }
+            });
+            
+            // 优化触摸反馈
+            const touchElements = document.querySelectorAll('.option-btn, .btn');
+            touchElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                    this.style.transition = 'transform 0.1s';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 100);
+                });
+                
+                element.addEventListener('touchcancel', function() {
+                    this.style.transform = '';
+                });
+            });
+            
+            // 检测设备方向变化
+            window.addEventListener('orientationchange', function() {
+                setTimeout(function() {
+                    window.scrollTo(0, 0);
+                }, 100);
+            });
+            
+            // 优化iOS Safari的滚动
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                document.body.style.webkitOverflowScrolling = 'touch';
+            }
+        }
+        
+        // 虚拟键盘相关变量
+        let virtualKeyboard = null;
+        let isKeyboardVisible = false;
+        let currentRomajiInput = '';
+        let convertedText = '';
+        
+        // 罗马字到平假名转换表
+        const romajiToHiragana = {
+            // 单个假名
+            'a': 'あ', 'i': 'い', 'u': 'う', 'e': 'え', 'o': 'お',
+            'ka': 'か', 'ki': 'き', 'ku': 'く', 'ke': 'け', 'ko': 'こ',
+            'ga': 'が', 'gi': 'ぎ', 'gu': 'ぐ', 'ge': 'げ', 'go': 'ご',
+            'sa': 'さ', 'si': 'し', 'shi': 'し', 'su': 'す', 'se': 'せ', 'so': 'そ',
+            'za': 'ざ', 'zi': 'じ', 'ji': 'じ', 'zu': 'ず', 'ze': 'ぜ', 'zo': 'ぞ',
+            'ta': 'た', 'ti': 'ち', 'chi': 'ち', 'tu': 'つ', 'tsu': 'つ', 'te': 'て', 'to': 'と',
+            'da': 'だ', 'di': 'ぢ', 'du': 'づ', 'de': 'で', 'do': 'ど',
+            'na': 'な', 'ni': 'に', 'nu': 'ぬ', 'ne': 'ね', 'no': 'の',
+            'ha': 'は', 'hi': 'ひ', 'hu': 'ふ', 'fu': 'ふ', 'he': 'へ', 'ho': 'ほ',
+            'ba': 'ば', 'bi': 'び', 'bu': 'ぶ', 'be': 'べ', 'bo': 'ぼ',
+            'pa': 'ぱ', 'pi': 'ぴ', 'pu': 'ぷ', 'pe': 'ぺ', 'po': 'ぽ',
+            'ma': 'ま', 'mi': 'み', 'mu': 'む', 'me': 'め', 'mo': 'も',
+            'ya': 'や', 'yu': 'ゆ', 'yo': 'よ',
+            'ra': 'ら', 'ri': 'り', 'ru': 'る', 're': 'れ', 'ro': 'ろ',
+            'wa': 'わ', 'wi': 'ゐ', 'we': 'ゑ', 'wo': 'を', 'n': 'ん',
+            // 拗音
+            'kya': 'きゃ', 'kyu': 'きゅ', 'kyo': 'きょ',
+            'gya': 'ぎゃ', 'gyu': 'ぎゅ', 'gyo': 'ぎょ',
+            'sha': 'しゃ', 'shu': 'しゅ', 'sho': 'しょ',
+            'ja': 'じゃ', 'ju': 'じゅ', 'jo': 'じょ',
+            'cha': 'ちゃ', 'chu': 'ちゅ', 'cho': 'ちょ',
+            'nya': 'にゃ', 'nyu': 'にゅ', 'nyo': 'にょ',
+            'hya': 'ひゃ', 'hyu': 'ひゅ', 'hyo': 'ひょ',
+            'bya': 'びゃ', 'byu': 'びゅ', 'byo': 'びょ',
+            'pya': 'ぴゃ', 'pyu': 'ぴゅ', 'pyo': 'ぴょ',
+            'mya': 'みゃ', 'myu': 'みゅ', 'myo': 'みょ',
+            'rya': 'りゃ', 'ryu': 'りゅ', 'ryo': 'りょ'
+        };
+        
+        // 创建虚拟键盘
+        function createVirtualKeyboard() {
+            if (virtualKeyboard) {
+                virtualKeyboard.remove();
+            }
+            
+            virtualKeyboard = document.createElement('div');
+            virtualKeyboard.className = 'virtual-keyboard';
+            virtualKeyboard.id = 'virtual-keyboard';
+            
+            virtualKeyboard.innerHTML = `
+                <div class="romaji-preview" id="romaji-preview">罗马字: <span id="romaji-text"></span></div>
+                <div class="keyboard-rows">
+                     <div class="keyboard-row">
+                         <div class="keyboard-key" data-key="q">q</div>
+                         <div class="keyboard-key" data-key="w">w</div>
+                         <div class="keyboard-key" data-key="e">e</div>
+                         <div class="keyboard-key" data-key="r">r</div>
+                         <div class="keyboard-key" data-key="t">t</div>
+                         <div class="keyboard-key" data-key="y">y</div>
+                         <div class="keyboard-key" data-key="u">u</div>
+                         <div class="keyboard-key" data-key="i">i</div>
+                         <div class="keyboard-key" data-key="o">o</div>
+                         <div class="keyboard-key" data-key="p">p</div>
+                     </div>
+                     <div class="keyboard-row">
+                         <div class="keyboard-key" data-key="a">a</div>
+                         <div class="keyboard-key" data-key="s">s</div>
+                         <div class="keyboard-key" data-key="d">d</div>
+                         <div class="keyboard-key" data-key="f">f</div>
+                         <div class="keyboard-key" data-key="g">g</div>
+                         <div class="keyboard-key" data-key="h">h</div>
+                         <div class="keyboard-key" data-key="j">j</div>
+                         <div class="keyboard-key" data-key="k">k</div>
+                         <div class="keyboard-key" data-key="l">l</div>
+                     </div>
+                     <div class="keyboard-row">
+                         <div class="keyboard-key" data-key="z">z</div>
+                         <div class="keyboard-key" data-key="x">x</div>
+                         <div class="keyboard-key" data-key="c">c</div>
+                         <div class="keyboard-key" data-key="v">v</div>
+                         <div class="keyboard-key" data-key="b">b</div>
+                         <div class="keyboard-key" data-key="n">n</div>
+                         <div class="keyboard-key" data-key="m">m</div>
+                         <div class="keyboard-key function-key backspace-key" data-key="backspace" style="flex: 2;">←</div>
+                     </div>
+                     <div class="keyboard-row">
+                         <div class="keyboard-key function-key submit-key" data-key="submit" style="flex: 1;">提交</div>
+                     </div>
+                 </div>
+            `;
+            
+            document.body.appendChild(virtualKeyboard);
+            
+            // 添加键盘按键事件
+            virtualKeyboard.addEventListener('click', handleKeyboardClick);
+        }
+        
+        // 处理键盘点击
+        function handleKeyboardClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const key = event.target.getAttribute('data-key');
+            if (!key) return;
+            
+            const input = document.getElementById('reading-input');
+            if (!input) return;
+            
+            switch (key) {
+                 case 'backspace':
+                     if (currentRomajiInput.length > 0) {
+                         // 删除当前输入的罗马字
+                         currentRomajiInput = currentRomajiInput.slice(0, -1);
+                     } else if (convertedText.length > 0) {
+                         // 删除已转换的平假名
+                         convertedText = convertedText.slice(0, -1);
+                     }
+                     updateInputDisplay();
+                     break;
+                     
+                 case 'submit':
+                     // 先转换剩余的罗马字输入
+                     if (currentRomajiInput) {
+                         realTimeConvert();
+                     }
+                     // 然后提交答案
+                     setTimeout(() => {
+                         checkInputAnswer();
+                     }, 100);
+                     break;
+                     
+                 default:
+                     currentRomajiInput += key;
+                     // 实时转换
+                     realTimeConvert();
+                     break;
+             }
+            
+            updateRomajiPreview();
+            input.focus();
+        }
+        
+        // 实时转换罗马字
+        function realTimeConvert() {
+            const input = document.getElementById('reading-input');
+            if (!input) return;
+            
+            // 如果没有罗马字输入，直接返回
+            if (!currentRomajiInput) {
+                updateInputDisplay();
+                return;
+            }
+            
+            let converted = '';
+            let remaining = currentRomajiInput;
+            
+            // 特殊处理：连续的n
+            if (remaining === 'nn') {
+                converted = 'ん';
+                remaining = '';
+            } else {
+                // 从最长的可能匹配开始尝试转换
+                while (remaining.length > 0) {
+                    let found = false;
+                    
+                    // 尝试从最长到最短的匹配
+                    for (let len = Math.min(remaining.length, 3); len > 0; len--) {
+                        const substr = remaining.substring(0, len);
+                        const hiragana = romajiToHiragana[substr];
+                        
+                        if (hiragana) {
+                            converted += hiragana;
+                            remaining = remaining.substring(len);
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    // 如果没有找到匹配，检查是否是部分输入
+                    if (!found) {
+                        // 检查当前输入是否是某个罗马字的开头
+                        let isPartial = false;
+                        for (const romaji in romajiToHiragana) {
+                            if (romaji.startsWith(remaining)) {
+                                isPartial = true;
+                                break;
+                            }
+                        }
+                        
+                        if (isPartial) {
+                            // 是部分输入，保留不转换
+                            break;
+                        } else {
+                            // 不是有效输入，跳过第一个字符
+                            remaining = remaining.substring(1);
+                        }
+                    }
+                }
+            }
+            
+            // 如果有转换结果，更新已转换的部分
+            if (converted) {
+                convertedText += converted;
+                currentRomajiInput = remaining;
+            }
+            
+            // 更新输入框显示
+            updateInputDisplay();
+        }
+        
+        // 更新输入框显示
+        function updateInputDisplay() {
+            const input = document.getElementById('reading-input');
+            if (!input) return;
+            
+            // 显示已转换的平假名 + 当前输入的罗马字
+            input.value = convertedText + currentRomajiInput;
+        }
+        
+        // 转换并插入平假名（保留原函数用于其他地方）
+        function convertAndInsert() {
+            const input = document.getElementById('reading-input');
+            if (!input || !currentRomajiInput) return;
+            
+            // 尝试转换当前罗马字输入
+            let converted = convertRomajiToHiragana(currentRomajiInput);
+            if (converted) {
+                input.value += converted;
+                currentRomajiInput = '';
+            } else if (currentRomajiInput.length > 0) {
+                // 如果无法转换，尝试部分转换
+                let partialConverted = '';
+                let remaining = currentRomajiInput;
+                
+                // 从最长的可能匹配开始尝试
+                for (let i = remaining.length; i > 0; i--) {
+                    const substr = remaining.substring(0, i);
+                    const hiragana = romajiToHiragana[substr];
+                    if (hiragana) {
+                        partialConverted += hiragana;
+                        remaining = remaining.substring(i);
+                        i = remaining.length + 1; // 重新开始
+                    }
+                }
+                
+                if (partialConverted) {
+                    input.value += partialConverted;
+                    currentRomajiInput = remaining;
+                }
+            }
+        }
+        
+        // 罗马字转平假名
+        function convertRomajiToHiragana(romaji) {
+            // 先尝试完整匹配
+            if (romajiToHiragana[romaji]) {
+                return romajiToHiragana[romaji];
+            }
+            
+            // 尝试部分匹配（从长到短）
+            for (let i = romaji.length; i > 0; i--) {
+                const substr = romaji.substring(0, i);
+                if (romajiToHiragana[substr]) {
+                    return romajiToHiragana[substr];
+                }
+            }
+            
+            return null;
+        }
+        
+        // 更新罗马字预览
+        function updateRomajiPreview() {
+            const romajiText = document.getElementById('romaji-text');
+            if (romajiText) {
+                romajiText.textContent = currentRomajiInput || '(空)';
+                
+                // 显示可能的转换结果
+                const preview = document.getElementById('romaji-preview');
+                if (currentRomajiInput) {
+                    // 检查是否可以转换
+                    const converted = convertRomajiToHiragana(currentRomajiInput);
+                    if (converted) {
+                        preview.innerHTML = `罗马字: <span style="color: #666;">${currentRomajiInput}</span> → <span style="color: #1565c0; font-weight: bold;">${converted}</span>`;
+                    } else {
+                        // 检查是否是部分输入
+                        let isPartial = false;
+                        for (const romaji in romajiToHiragana) {
+                            if (romaji.startsWith(currentRomajiInput)) {
+                                isPartial = true;
+                                break;
+                            }
+                        }
+                        
+                        if (isPartial) {
+                            preview.innerHTML = `罗马字: <span style="color: #666;">${currentRomajiInput}</span> <span style="color: #999;">(输入中...)</span>`;
+                        } else {
+                            preview.innerHTML = `罗马字: <span style="color: #f44336;">${currentRomajiInput}</span> <span style="color: #f44336;">(无效输入)</span>`;
+                        }
+                    }
+                } else {
+                    preview.innerHTML = '罗马字: <span style="color: #999;">(空)</span>';
+                }
+            }
+        }
+        
+        // 显示/隐藏虚拟键盘
+        function toggleVirtualKeyboard() {
+            if (isKeyboardVisible) {
+                hideVirtualKeyboard();
+            } else {
+                showVirtualKeyboard();
+            }
+        }
+        
+        function showVirtualKeyboard() {
+            if (virtualKeyboard) {
+                virtualKeyboard.classList.add('show');
+                isKeyboardVisible = true;
+                
+                // 重置输入状态
+                currentRomajiInput = '';
+                convertedText = '';
+                updateInputDisplay();
+                updateRomajiPreview();
+            }
+        }
+        
+        function hideVirtualKeyboard() {
+            if (virtualKeyboard) {
+                virtualKeyboard.classList.remove('show');
+                isKeyboardVisible = false;
+                
+                // 转换剩余的罗马字输入
+                if (currentRomajiInput) {
+                    convertAndInsert();
+                }
+            }
+        }
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            loadKanjiData();
+            initMobileOptimizations();
+            
+            // 添加搜索框焦点样式
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('focus', function() {
+                this.style.borderColor = '#667eea';
+                this.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+            });
+            searchInput.addEventListener('blur', function() {
+                this.style.borderColor = '#ddd';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
