@@ -21,95 +21,70 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 5px;
         }
 
         .container {
             background: white;
-            border-radius: 20px;
+            border-radius: 15px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            padding: 40px;
+            padding: 6px;
             max-width: 800px;
             width: 100%;
             text-align: center;
         }
 
         .header {
-            margin-bottom: 30px;
+            margin-bottom: 6px;
         }
 
         .title {
-            font-size: 2.5em;
+            font-size: 1.6em;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 2px;
             font-weight: 700;
         }
 
         .subtitle {
-            font-size: 1.2em;
+            font-size: 0.8em;
             color: #666;
-            margin-bottom: 20px;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
+            margin-bottom: 0;
         }
 
         .game-area {
-            margin-bottom: 30px;
+            margin-bottom: 6px;
         }
 
         .kanji-display {
-            font-size: 8em;
+            font-size: 32px;
             font-weight: bold;
             color: #333;
-            margin: 30px 0;
+            margin: 3px 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            min-height: 120px;
+            min-height: 35px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .question {
-            font-size: 1.3em;
+            font-size: 1em;
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 15px;
         }
 
         .option-btn {
-            padding: 15px 20px;
-            font-size: 1.2em;
+            padding: 6px 12px;
+            font-size: 1em;
             border: 2px solid #ddd;
-            border-radius: 10px;
+            border-radius: 8px;
             background: white;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -151,16 +126,39 @@
 
         .controls {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 6px;
             justify-content: center;
-            flex-wrap: wrap;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 6px;
+        }
+
+        .navigation-buttons .btn {
+            flex: 1;
+            max-width: 110px;
+            font-size: 0.75em;
+            padding: 4px 6px;
+            min-height: 28px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
         }
 
         .btn {
-            padding: 12px 24px;
-            font-size: 1.1em;
+            padding: 4px 8px;
+            font-size: 0.8em;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: inherit;
@@ -171,6 +169,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             touch-action: manipulation;
+            min-height: 28px;
         }
 
         .btn:active {
@@ -227,15 +226,18 @@
 
         .kanji-info {
             background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+            border-radius: 8px;
+            padding: 6px;
+            margin: 8px auto;
             text-align: left;
+            width: 100%;
+            max-width: 400px;
         }
 
         .kanji-info h3 {
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
+            font-size: 1.1em;
         }
 
         .reading-type {
@@ -249,50 +251,107 @@
         }
 
         .examples {
-            margin-top: 10px;
+            margin-top: 3px;
             color: #666;
+        }
+
+        /* 进度条样式 */
+        .progress-container {
+            margin: 15px 0;
+            padding: 0 20px;
+        }
+
+        .progress-bar-wrapper {
+            background: #f0f0f0;
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .progress-percentage {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1em;
         }
 
         /* 移动端优化 */
         @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 5px;
             }
 
             .container {
-                padding: 20px;
+                padding: 8px;
                 border-radius: 15px;
                 max-width: 100%;
             }
 
             .title {
-                font-size: 2em;
+                font-size: 1.6em;
             }
 
             .subtitle {
-                font-size: 1em;
+                font-size: 0.8em;
             }
 
             .kanji-display {
-                font-size: 4em;
-                min-height: 80px;
-                margin: 20px 0;
+                font-size: 32px;
+                min-height: 30px;
+                margin: 2px 0;
             }
 
             .question {
-                font-size: 1.1em;
+                font-size: 0.85em;
             }
 
             .options {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 6px;
             }
 
             .option-btn {
-                padding: 18px 15px;
-                font-size: 1.1em;
-                min-height: 60px;
-                border-radius: 12px;
+                padding: 8px 10px;
+                font-size: 0.9em;
+                min-height: 38px;
+                border-radius: 8px;
             }
 
             .stats {
@@ -303,14 +362,41 @@
 
             .controls {
                 flex-direction: column;
-                gap: 12px;
+                gap: 6px;
+            }
+
+            .navigation-buttons {
+                display: flex;
+                gap: 6px;
+                justify-content: space-between;
+                margin-bottom: 6px;
+            }
+
+            .navigation-buttons .btn {
+                flex: 1;
+                max-width: 100px;
+                font-size: 0.75em;
+                padding: 3px 6px;
+                min-height: 20px;
+            }
+
+            .action-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+
+            .action-buttons .btn {
+                padding: 3px 6px;
+                font-size: 0.75em;
+                min-height: 20px;
             }
 
             .btn {
-                padding: 15px 20px;
-                font-size: 1.1em;
-                min-height: 50px;
-                border-radius: 10px;
+                padding: 3px 6px;
+                font-size: 0.75em;
+                min-height: 20px;
+                border-radius: 4px;
             }
 
             .search-container input {
@@ -326,7 +412,7 @@
             }
 
             .kanji-info {
-                padding: 15px;
+                padding: 8px;
                 font-size: 0.95em;
             }
         }
@@ -334,25 +420,38 @@
         /* 小屏手机优化 */
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 4px;
             }
 
             .title {
-                font-size: 1.8em;
+                font-size: 1.6em;
             }
 
             .kanji-display {
-                font-size: 3.5em;
+                font-size: 32px;
             }
 
             .option-btn {
-                padding: 20px 15px;
-                font-size: 1em;
+                padding: 10px 10px;
+                font-size: 0.85em;
             }
 
             .btn {
-                padding: 16px 20px;
-                font-size: 1em;
+                padding: 3px 6px;
+                font-size: 0.75em;
+                min-height: 20px;
+            }
+
+            .navigation-buttons .btn {
+                padding: 3px 6px;
+                font-size: 0.75em;
+                min-height: 20px;
+            }
+
+            .action-buttons .btn {
+                padding: 3px 6px;
+                font-size: 0.75em;
+                min-height: 20px;
             }
         }
 
@@ -382,8 +481,20 @@
             }
 
             .btn {
-                min-height: 50px;
-                padding: 15px 20px;
+                min-height: 28px;
+                padding: 8px 12px;
+            }
+
+            .navigation-buttons .btn {
+                min-height: 28px;
+                padding: 8px 12px;
+                font-size: 0.75em;
+            }
+
+            .action-buttons .btn {
+                min-height: 28px;
+                padding: 8px 12px;
+                font-size: 0.75em;
             }
 
             .option-btn:hover {
@@ -398,7 +509,7 @@
         /* 横屏手机优化 */
         @media (max-width: 768px) and (orientation: landscape) {
             .kanji-display {
-                font-size: 3em;
+                font-size: 32px;
                 margin: 15px 0;
             }
 
@@ -628,21 +739,6 @@
             <p class="subtitle">学习日文汉字的音读和训读发音</p>
         </div>
 
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number" id="correct-count">0</div>
-                <div class="stat-label">正确</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="total-count">0</div>
-                <div class="stat-label">总题数</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="accuracy">0%</div>
-                <div class="stat-label">正确率</div>
-            </div>
-        </div>
-
         <div class="game-area">
             <div class="loading" id="loading">正在加载汉字数据...</div>
             
@@ -663,27 +759,30 @@
         </div>
 
         <div class="controls">
+            <div class="navigation-buttons">
+                <!-- 导航按钮将通过JavaScript动态添加 -->
+            </div>
+            <div class="action-buttons" style="margin-top: 15px; text-align: center;">
+                <button class="btn btn-primary" id="search-btn" onclick="toggleSearch()">搜索</button>
+                <button class="btn btn-secondary" id="mode-btn" onclick="toggleMode()">切换模式</button>
+            </div>
             <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display: none;">下一题</button>
-            <button class="btn btn-secondary" id="restart-btn" onclick="restartGame()">重新开始</button>
             <button class="btn btn-secondary" id="show-info-btn" onclick="toggleKanjiInfo()" style="display: none;">显示详情</button>
-            <button class="btn btn-secondary" id="mode-btn" onclick="toggleMode()">切换模式</button>
         </div>
         
-        <div class="search-container" style="margin-top: 20px; text-align: center;">
-            <div style="display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center;">
+        <div class="search-container" id="search-container" style="margin-top: 15px; text-align: center; display: none;">
+            <div style="display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 400px;">
                 <input type="text" id="search-input" placeholder="搜索汉字、读音或含义..." 
-                       style="padding: 10px 15px; font-size: 1em; border: 2px solid #ddd; border-radius: 25px; 
-                              width: 250px; max-width: 80%; outline: none; transition: border-color 0.3s;" 
+                       style="padding: 6px 12px; font-size: 0.9em; border: 2px solid #ddd; border-radius: 20px; 
+                              flex: 1; min-width: 200px; outline: none; transition: all 0.3s;" 
                        onkeypress="handleSearchKeyPress(event)">
                 <button class="btn btn-primary" onclick="searchKanji()" 
-                        style="padding: 10px 20px; border-radius: 25px; font-size: 1em;">🔍 搜索</button>
-                <button class="btn btn-secondary" onclick="clearSearch()" 
-                        style="padding: 10px 15px; border-radius: 25px; font-size: 1em;">清除</button>
+                        style="padding: 6px 12px; border-radius: 20px; font-size: 0.9em; min-width: 40px;">🔍</button>
             </div>
-            <div id="search-results" style="margin-top: 15px; max-height: 200px; overflow-y: auto; display: none;"></div>
+            <div id="search-results" style="margin-top: 10px; max-height: 150px; overflow-y: auto; display: none;"></div>
         </div>
 
-        <div id="mode-info" class="mode-info" style="margin-top: 20px; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 0.9em; color: #1565c0;">
+        <div id="mode-info" class="mode-info" style="margin-top: 15px; padding: 8px; background: #e3f2fd; border-radius: 8px; font-size: 0.85em; color: #1565c0;">
              当前模式：学习模式
          </div>
     </div>
@@ -700,6 +799,13 @@
         };
         let answered = false;
         let gameMode = 'study'; // 'study', 'example', 'input', 'plan'
+        
+        // 有限练习模式的题库管理
+        let remainingKanji = []; // 未答对的汉字（包括新题和错题）
+        let completedKanji = []; // 已答对的汉字
+        let isFiniteMode = false; // 是否为有限练习模式
+        let isFirstQuestion = true; // 是否为第一次进入模式的第一题
+        
         let studyPlan = {
             learnedWords: [], // 已学习的词汇
             reviewSchedule: [], // 复习计划
@@ -713,15 +819,157 @@
 
         // 切换游戏模式
         function toggleMode() {
-            if (gameMode === 'study') {
-                gameMode = 'example';
-            } else if (gameMode === 'example') {
-                gameMode = 'input';
-            } else if (gameMode === 'input') {
-                gameMode = 'plan';
-            } else {
-                gameMode = 'study';
+            // 显示模式选择对话框
+            showModeSelector();
+        }
+
+        // 显示模式选择器
+        function showModeSelector() {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                padding: 24px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                text-align: center;
+            `;
+            
+            modal.innerHTML = `
+                <h3 style="margin: 0 0 20px 0; color: #333; font-size: 1.2em;">选择学习模式</h3>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="mode-option" data-mode="study" style="
+                        padding: 12px 16px;
+                        border: 2px solid #667eea;
+                        border-radius: 8px;
+                        background: ${gameMode === 'study' ? '#667eea' : 'white'};
+                        color: ${gameMode === 'study' ? 'white' : '#667eea'};
+                        cursor: pointer;
+                        font-size: 1em;
+                        transition: all 0.3s;
+                    ">
+                        📚 学习模式 - 浏览汉字发音和例词
+                    </button>
+                    <button class="mode-option" data-mode="example" style="
+                        padding: 12px 16px;
+                        border: 2px solid #28a745;
+                        border-radius: 8px;
+                        background: ${gameMode === 'example' ? '#28a745' : 'white'};
+                        color: ${gameMode === 'example' ? 'white' : '#28a745'};
+                        cursor: pointer;
+                        font-size: 1em;
+                        transition: all 0.3s;
+                    ">
+                        🎯 复习测试 - 根据例词选择正确发音
+                    </button>
+                    <button class="mode-option" data-mode="input" style="
+                        padding: 12px 16px;
+                        border: 2px solid #ffc107;
+                        border-radius: 8px;
+                        background: ${gameMode === 'input' ? '#ffc107' : 'white'};
+                        color: ${gameMode === 'input' ? 'white' : '#ffc107'};
+                        cursor: pointer;
+                        font-size: 1em;
+                        transition: all 0.3s;
+                    ">
+                        ✏️ 手动输入 - 根据例词手动输入发音
+                    </button>
+                    <button class="mode-option" data-mode="plan" style="
+                        padding: 12px 16px;
+                        border: 2px solid #6f42c1;
+                        border-radius: 8px;
+                        background: ${gameMode === 'plan' ? '#6f42c1' : 'white'};
+                        color: ${gameMode === 'plan' ? 'white' : '#6f42c1'};
+                        cursor: pointer;
+                        font-size: 1em;
+                        transition: all 0.3s;
+                    ">
+                        📋 学习计划 - 制定学习目标和复习计划
+                    </button>
+                </div>
+                <button onclick="closeModeSelector()" style="
+                    margin-top: 16px;
+                    padding: 8px 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 6px;
+                    background: #f8f9fa;
+                    color: #666;
+                    cursor: pointer;
+                    font-size: 0.9em;
+                ">取消</button>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // 添加点击事件
+            modal.querySelectorAll('.mode-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const selectedMode = btn.dataset.mode;
+                    switchToMode(selectedMode);
+                    closeModeSelector();
+                });
+                
+                // 悬停效果
+                btn.addEventListener('mouseenter', () => {
+                    if (btn.dataset.mode !== gameMode) {
+                        btn.style.opacity = '0.8';
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.opacity = '1';
+                });
+            });
+            
+            // 点击遮罩关闭
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeModeSelector();
+                }
+            });
+            
+            // 存储引用以便关闭
+            window.currentModeSelector = overlay;
+        }
+
+        // 关闭模式选择器
+        function closeModeSelector() {
+            if (window.currentModeSelector) {
+                document.body.removeChild(window.currentModeSelector);
+                window.currentModeSelector = null;
             }
+        }
+
+        // 切换到指定模式
+        function switchToMode(mode) {
+            gameMode = mode;
+            
+            // 重置第一题标志
+            isFirstQuestion = true;
+            
+            // 如果切换到练习模式，初始化有限模式
+            if (gameMode === 'example' || gameMode === 'input') {
+                initFiniteMode();
+            } else {
+                isFiniteMode = false;
+            }
+            
             updateModeInfo();
             if (gameMode === 'study') {
                 enhancedShowStudyMode();
@@ -731,6 +979,85 @@
                 nextQuestion();
             } else {
                 showPlanMode();
+            }
+        }
+
+        // 初始化有限练习模式
+        function initFiniteMode() {
+            isFiniteMode = true;
+            
+            // 获取已学习的汉字
+            const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
+            
+            // 获取所有已学汉字的例词（按发音分组）
+            const learnedExamples = exampleQuestions.filter(q => learnedKanji.includes(q.kanji));
+            
+            // 按发音分组，每个发音只选一个例词
+            const readingGroups = new Map();
+            learnedExamples.forEach(example => {
+                const key = `${example.kanji}-${example.reading}-${example.type}`;
+                if (!readingGroups.has(key)) {
+                    readingGroups.set(key, []);
+                }
+                readingGroups.get(key).push(example);
+            });
+            
+            // 从每个发音组中随机选择一个例词
+            const selectedExamples = [];
+            readingGroups.forEach(examples => {
+                const randomIndex = Math.floor(Math.random() * examples.length);
+                selectedExamples.push(examples[randomIndex]);
+            });
+            
+            // 初始化题库：每个发音只有一道题目
+            remainingKanji = [...selectedExamples];
+            completedKanji = [];
+            
+            console.log(`有限练习模式已初始化，共 ${remainingKanji.length} 道题目`);
+        }
+
+        // 检查是否完成所有题目
+        function checkFiniteCompletion() {
+            if (isFiniteMode && remainingKanji.length === 0) {
+                showCompletionScreen();
+                return true;
+            }
+            return false;
+        }
+
+        // 显示完成界面
+        function showCompletionScreen() {
+            document.getElementById('kanji-display').innerHTML = '🎉';
+            document.getElementById('kanji-display').style.fontSize = '64px';
+            document.getElementById('question').innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2 style="color: #28a745; margin-bottom: 16px;">恭喜完成！</h2>
+                    <p style="font-size: 18px; margin-bottom: 12px;">你已经完成了所有 ${completedKanji.length} 道题目！</p>
+                    <p style="color: #666; margin-bottom: 20px;">所有汉字都答对了，太棒了！</p>
+                    <button onclick="restartFiniteMode()" class="btn btn-primary" style="margin-right: 10px;">重新开始</button>
+                    <button onclick="switchToMode('study')" class="btn btn-secondary">返回学习模式</button>
+                </div>
+            `;
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('result-message').style.display = 'none';
+            document.getElementById('kanji-info').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('show-info-btn').style.display = 'none';
+            document.getElementById('search-btn').style.display = 'none';
+            document.getElementById('mode-btn').style.display = 'inline-block';
+            
+            // 清空导航按钮
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+        }
+
+        // 重新开始有限练习模式
+        function restartFiniteMode() {
+            initFiniteMode();
+            if (gameMode === 'example') {
+                generateExampleQuestion();
+            } else if (gameMode === 'input') {
+                generateInputQuestion();
             }
         }
 
@@ -761,27 +1088,129 @@
             // 显示当前汉字
             currentKanji = kanjiData[studyIndex];
             document.getElementById('kanji-display').textContent = currentKanji.kanji;
-            document.getElementById('kanji-display').style.fontSize = '8em';
+            document.getElementById('kanji-display').style.fontSize = '32px';
             
             // 显示汉字详细信息
             showKanjiInfo();
             
             // 显示导航按钮
-            document.getElementById('next-btn').style.display = 'inline-block';
-            document.getElementById('next-btn').textContent = '下一个汉字';
+            document.getElementById('next-btn').style.display = 'none';
             document.getElementById('show-info-btn').style.display = 'none';
+            document.getElementById('search-btn').style.display = 'inline-block';
+            document.getElementById('mode-btn').style.display = 'inline-block';
             
-            // 添加上一个按钮
-            let prevBtn = document.getElementById('prev-btn');
-            if (!prevBtn) {
-                prevBtn = document.createElement('button');
-                prevBtn.id = 'prev-btn';
-                prevBtn.className = 'btn btn-secondary';
-                prevBtn.textContent = '上一个汉字';
-                prevBtn.onclick = () => previousKanji();
-                document.querySelector('.controls').insertBefore(prevBtn, document.getElementById('next-btn'));
+            // 清空并重新创建导航按钮
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+            
+            // 添加上一个汉字按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.id = 'prev-btn';
+            prevBtn.className = 'btn btn-secondary';
+            prevBtn.textContent = '上一个汉字';
+            prevBtn.onclick = () => previousKanji();
+            navigationButtons.appendChild(prevBtn);
+            
+            // 添加"标记为已学"按钮到导航按钮中间
+            const currentKanjiChar = document.getElementById('kanji-display').textContent;
+            const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
+            
+            if (!isLearned) {
+                const learnBtn = document.createElement('button');
+                learnBtn.id = 'learn-btn';
+                learnBtn.textContent = '✓ 标记为已学';
+                learnBtn.className = 'btn';
+                learnBtn.style.background = '#28a745';
+                learnBtn.style.color = 'white';
+                learnBtn.onclick = () => {
+                    addToLearned(currentKanjiChar);
+                    learnBtn.textContent = '✓ 已学习';
+                    learnBtn.disabled = true;
+                    learnBtn.style.background = '#6c757d';
+                    // 标记为已学后，自动跳转到下一个未学汉字
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 500);
+                };
+                navigationButtons.appendChild(learnBtn);
             }
-            prevBtn.style.display = 'inline-block';
+            
+            // 添加下一个汉字按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.id = 'next-kanji-btn';
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = '下一个汉字';
+            nextBtn.onclick = () => nextQuestion();
+            navigationButtons.appendChild(nextBtn);
+        }
+
+        // 生成有限模式的手动输入测试题
+        function generateFiniteInputQuestion() {
+            // 检查是否还有剩余题目
+            if (remainingKanji.length === 0) {
+                checkFiniteCompletion();
+                return;
+            }
+
+            // 重置状态
+            resetQuestionState();
+
+            // 从剩余例词中随机选择一个
+            const randomIndex = Math.floor(Math.random() * remainingKanji.length);
+            currentExample = remainingKanji[randomIndex];
+            currentKanji = currentExample.kanjiEntry;
+            correctAnswer = currentExample.reading;
+
+            // 显示例词，高亮目标汉字
+            const highlightedExample = currentExample.example.replace(
+                new RegExp(currentExample.kanji, 'g'), 
+                `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
+            );
+            document.getElementById('kanji-display').innerHTML = highlightedExample;
+            document.getElementById('kanji-display').style.fontSize = '32px';
+            
+            // 显示进度信息
+            const typeText = currentExample.type === 'on' ? '音读' : '训读';
+            document.getElementById('question').innerHTML = `请输入例词"${currentExample.example}"中<strong>${currentExample.kanji}</strong>字的${typeText}发音：`;
+
+            // 添加进度条
+            const progressBarHtml = createProgressBar(completedKanji.length, completedKanji.length + remainingKanji.length);
+            const progressContainer = document.createElement('div');
+            progressContainer.innerHTML = progressBarHtml;
+            document.getElementById('question').appendChild(progressContainer.firstElementChild);
+
+            // 生成输入界面
+            generateInputInterface();
+            
+            // 创建导航按钮
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+            
+            // 添加上一题按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.id = 'prev-input-btn';
+            prevBtn.className = 'btn btn-secondary';
+            prevBtn.textContent = '上一题';
+            prevBtn.onclick = () => generateFiniteInputQuestion();
+            navigationButtons.appendChild(prevBtn);
+            
+            // 添加显示详情按钮
+            const infoBtn = document.createElement('button');
+            infoBtn.id = 'show-info-input-btn';
+            infoBtn.className = 'btn';
+            infoBtn.style.background = '#17a2b8';
+            infoBtn.style.color = 'white';
+            infoBtn.textContent = '显示详情';
+            infoBtn.onclick = () => toggleKanjiInfo();
+            navigationButtons.appendChild(infoBtn);
+            
+            // 添加下一题按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.id = 'next-input-btn';
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = '下一题';
+            nextBtn.onclick = () => nextQuestion();
+            navigationButtons.appendChild(nextBtn);
         }
         
         // 上一个汉字
@@ -805,21 +1234,8 @@
                     statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
                     statusDiv.style.marginTop = '10px';
                     kanjiInfo.appendChild(statusDiv);
-                } else {
-                    const learnBtn = document.createElement('button');
-                    learnBtn.textContent = '✓ 标记为已学';
-                    learnBtn.className = 'btn';
-                    learnBtn.style.background = '#28a745';
-                    learnBtn.style.color = 'white';
-                    learnBtn.style.marginTop = '10px';
-                    learnBtn.onclick = () => {
-                        addToLearned(currentKanjiChar);
-                        learnBtn.textContent = '✓ 已学习';
-                        learnBtn.disabled = true;
-                        learnBtn.style.background = '#6c757d';
-                    };
-                    kanjiInfo.appendChild(learnBtn);
                 }
+                // 移除这里的标记为已学按钮，因为已经移到controls区域了
             }
         }
 
@@ -876,6 +1292,9 @@
 
         // 生成下一题
         function nextQuestion() {
+            // 标记不再是第一题
+            isFirstQuestion = false;
+            
             if (gameMode === 'study') {
                 studyIndex = (studyIndex + 1) % kanjiData.length;
                 studyPlan.studyIndex = studyIndex;
@@ -895,21 +1314,8 @@
                         statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
                         statusDiv.style.marginTop = '10px';
                         kanjiInfo.appendChild(statusDiv);
-                    } else {
-                        const learnBtn = document.createElement('button');
-                        learnBtn.textContent = '✓ 标记为已学';
-                        learnBtn.className = 'btn';
-                        learnBtn.style.background = '#28a745';
-                        learnBtn.style.color = 'white';
-                        learnBtn.style.marginTop = '10px';
-                        learnBtn.onclick = () => {
-                            addToLearned(currentKanjiChar);
-                            learnBtn.textContent = '✓ 已学习';
-                            learnBtn.disabled = true;
-                            learnBtn.style.background = '#6c757d';
-                        };
-                        kanjiInfo.appendChild(learnBtn);
                     }
+                    // 移除这里的标记为已学按钮，因为已经移到controls区域了
                 }
                 return;
             }
@@ -946,19 +1352,27 @@
 
         // 生成例词测试题（仅复习已学汉字）
         function generateExampleQuestion() {
+            // 如果是有限模式，使用有限模式逻辑
+            if (isFiniteMode) {
+                return generateFiniteExampleQuestion();
+            }
+            
+            // 原有的无限模式逻辑
             // 筛选已学汉字的例词
             const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
             const learnedExamples = exampleQuestions.filter(q => learnedKanji.includes(q.kanji));
             
             if (learnedExamples.length === 0) {
                 document.getElementById('kanji-display').textContent = '📚';
-                document.getElementById('kanji-display').style.fontSize = '4em';
+                document.getElementById('kanji-display').style.fontSize = '32px';
                 document.getElementById('question').textContent = '还没有学习过的汉字，请先在学习模式中学习一些汉字！';
                 document.getElementById('options').innerHTML = '';
                 document.getElementById('result-message').style.display = 'none';
                 document.getElementById('kanji-info').style.display = 'none';
                 document.getElementById('next-btn').style.display = 'none';
                 document.getElementById('show-info-btn').style.display = 'none';
+                document.getElementById('search-btn').style.display = 'inline-block';
+                document.getElementById('mode-btn').style.display = 'inline-block';
                 const prevBtn = document.getElementById('prev-btn');
                 if (prevBtn) prevBtn.style.display = 'none';
                 return;
@@ -993,7 +1407,7 @@
                 `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
             );
             document.getElementById('kanji-display').innerHTML = highlightedExample;
-            document.getElementById('kanji-display').style.fontSize = '3em';
+            document.getElementById('kanji-display').style.fontSize = '32px';
             
             // 检查是否是今日复习任务
             const isReviewTask = todayReview.some(item => item.kanji === currentExample.kanji);
@@ -1003,17 +1417,111 @@
 
             // 生成选项
             generateExampleOptions(correctAnswer, currentExample.type);
+            
+            // 创建导航按钮（与学习模式保持一致的布局）
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+            
+            // 添加上一题按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.id = 'prev-question-btn';
+            prevBtn.className = 'btn btn-secondary';
+            prevBtn.textContent = '上一题';
+            prevBtn.onclick = () => generateExampleQuestion();
+            navigationButtons.appendChild(prevBtn);
+            
+            // 添加显示详情按钮
+            const infoBtn = document.createElement('button');
+            infoBtn.id = 'show-info-btn-nav';
+            infoBtn.className = 'btn';
+            infoBtn.style.background = '#17a2b8';
+            infoBtn.style.color = 'white';
+            infoBtn.textContent = '显示详情';
+            infoBtn.onclick = () => toggleKanjiInfo();
+            navigationButtons.appendChild(infoBtn);
+            
+            // 添加下一题按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.id = 'next-question-btn';
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = '下一题';
+            nextBtn.onclick = () => nextQuestion();
+            navigationButtons.appendChild(nextBtn);
+        }
+
+        // 生成进度条HTML
+        function createProgressBar(completed, total) {
+            const percentage = Math.round((completed / total) * 100);
+            return `
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="progress-text">
+                        进度：<span class="progress-percentage">${percentage}%</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 有限模式的复习测试题生成
+        function generateFiniteExampleQuestion() {
+            // 检查是否已完成所有题目
+            if (checkFiniteCompletion()) {
+                return;
+            }
+
+            // 从剩余例词中随机选择一个
+            const randomIndex = Math.floor(Math.random() * remainingKanji.length);
+            currentExample = remainingKanji[randomIndex];
+            currentKanji = currentExample.kanjiEntry;
+            correctAnswer = currentExample.reading;
+
+            // 重置状态
+            resetQuestionState();
+
+            // 显示例词，高亮目标汉字
+            const highlightedExample = currentExample.example.replace(
+                new RegExp(currentExample.kanji, 'g'), 
+                `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
+            );
+            document.getElementById('kanji-display').innerHTML = highlightedExample;
+            document.getElementById('kanji-display').style.fontSize = '32px';
+            
+            const typeText = currentExample.type === 'on' ? '音读' : '训读';
+            document.getElementById('question').innerHTML = `请选择例词"${currentExample.example}"中<strong>${currentExample.kanji}</strong>字的${typeText}发音：`;
+
+            // 添加进度条
+            const progressBarHtml = createProgressBar(completedKanji.length, completedKanji.length + remainingKanji.length);
+            const progressContainer = document.createElement('div');
+            progressContainer.innerHTML = progressBarHtml;
+            document.getElementById('question').appendChild(progressContainer.firstElementChild);
+
+            // 生成选项
+            generateExampleOptions(correctAnswer, currentExample.type);
+            
+            // 创建导航按钮
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+            
+
         }
 
         // 生成手动输入测试题（仅复习已学汉字）
         function generateInputQuestion() {
+            // 检查是否为有限模式
+            if (isFiniteMode) {
+                generateFiniteInputQuestion();
+                return;
+            }
+            
             // 筛选已学汉字的例词
             const learnedKanji = studyPlan.learnedWords.map(item => item.kanji);
             const learnedExamples = exampleQuestions.filter(q => learnedKanji.includes(q.kanji));
             
             if (learnedExamples.length === 0) {
                 document.getElementById('kanji-display').textContent = '📚';
-                document.getElementById('kanji-display').style.fontSize = '4em';
+                document.getElementById('kanji-display').style.fontSize = '32px';
                 document.getElementById('question').textContent = '还没有学习过的汉字，请先在学习模式中学习一些汉字！';
                 document.getElementById('options').innerHTML = '';
                 document.getElementById('result-message').style.display = 'none';
@@ -1054,7 +1562,7 @@
                 `<span style="color: #667eea; font-weight: bold; text-decoration: underline;">${currentExample.kanji}</span>`
             );
             document.getElementById('kanji-display').innerHTML = highlightedExample;
-            document.getElementById('kanji-display').style.fontSize = '3em';
+            document.getElementById('kanji-display').style.fontSize = '32px';
             
             // 检查是否是今日复习任务
             const isReviewTask = todayReview.some(item => item.kanji === currentExample.kanji);
@@ -1064,6 +1572,36 @@
 
             // 生成输入界面
             generateInputInterface();
+            
+            // 创建导航按钮（与学习模式保持一致的布局）
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            navigationButtons.innerHTML = '';
+            
+            // 添加上一题按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.id = 'prev-input-btn';
+            prevBtn.className = 'btn btn-secondary';
+            prevBtn.textContent = '上一题';
+            prevBtn.onclick = () => generateInputQuestion();
+            navigationButtons.appendChild(prevBtn);
+            
+            // 添加显示详情按钮
+            const infoBtn = document.createElement('button');
+            infoBtn.id = 'show-info-input-btn';
+            infoBtn.className = 'btn';
+            infoBtn.style.background = '#17a2b8';
+            infoBtn.style.color = 'white';
+            infoBtn.textContent = '显示详情';
+            infoBtn.onclick = () => toggleKanjiInfo();
+            navigationButtons.appendChild(infoBtn);
+            
+            // 添加下一题按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.id = 'next-input-btn';
+            nextBtn.className = 'btn btn-primary';
+            nextBtn.textContent = '下一题';
+            nextBtn.onclick = () => nextQuestion();
+            navigationButtons.appendChild(nextBtn);
         }
 
         // 重置问题状态
@@ -1074,7 +1612,9 @@
             document.getElementById('next-btn').style.display = 'none';
             document.getElementById('next-btn').textContent = '下一题';
             document.getElementById('show-info-btn').style.display = 'none';
-            document.getElementById('kanji-display').style.fontSize = '8em';
+            document.getElementById('search-btn').style.display = 'inline-block';
+            document.getElementById('mode-btn').style.display = 'inline-block';
+            document.getElementById('kanji-display').style.fontSize = '32px';
             
             // 隐藏上一个按钮（仅在学习模式显示）
             const prevBtn = document.getElementById('prev-btn');
@@ -1082,11 +1622,23 @@
                 prevBtn.style.display = 'none';
             }
             
+            // 重新启用输入框和提交按钮
+            const input = document.getElementById('reading-input');
+            if (input) {
+                input.disabled = false;
+                const submitBtn = input.parentElement.querySelector('button');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                }
+            }
+            
             // 重新启用虚拟键盘的提交按钮
             const virtualSubmitBtn = document.querySelector('.submit-key');
             if (virtualSubmitBtn) {
+                virtualSubmitBtn.textContent = '提交';
                 virtualSubmitBtn.style.opacity = '1';
                 virtualSubmitBtn.style.pointerEvents = 'auto';
+                virtualSubmitBtn.setAttribute('data-key', 'submit');
             }
         }
 
@@ -1216,23 +1768,26 @@
                 margin-right: 10px;
             `;
             
-            // 检测设备类型
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                           (('ontouchstart' in window) && window.innerWidth <= 1024) || 
-                           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+            // 检测设备类型 - 仅使用用户代理字符串判断
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
             if (isMobile) {
                 // 移动设备：禁用系统键盘并显示虚拟键盘
                 input.readOnly = true;
-                input.addEventListener('click', () => {
+                input.addEventListener('click', (e) => {
+                    e.stopPropagation(); // 阻止事件冒泡
                     showVirtualKeyboard();
                 });
-                input.addEventListener('focus', () => {
+                
+                // 如果不是第一题，自动显示虚拟键盘
+                if (!isFirstQuestion) {
                     showVirtualKeyboard();
-                });
+                }
+                // 移除focus事件的自动弹出键盘，只保留点击事件
             } else {
                 // 电脑设备：允许直接键盘输入
                 input.readOnly = false;
+                
                 input.addEventListener('input', (e) => {
                     // 实时转换罗马字为平假名
                     const value = e.target.value;
@@ -1303,6 +1858,9 @@
                     const finalValue = converted + remaining;
                     if (finalValue !== value) {
                         e.target.value = finalValue;
+                        // 将光标移动到内容末尾，允许继续输入
+                        const newCursorPos = finalValue.length;
+                        e.target.setSelectionRange(newCursorPos, newCursorPos);
                     }
                 });
                 
@@ -1365,6 +1923,11 @@
                 resultMessage.textContent = '正确！';
                 resultMessage.className = 'result-message result-correct';
                 
+                // 有限模式：答对时移动到已完成列表
+                if (isFiniteMode && currentExample) {
+                    handleFiniteCorrectAnswer();
+                }
+                
                 // 如果是复习模式且答对了，完成复习任务
                 if (gameMode === 'example' && currentExample) {
                     completeReview(currentExample.kanji);
@@ -1378,6 +1941,8 @@
                 resultMessage.textContent = `错误！正确答案是：${correctAnswer}`;
                 resultMessage.className = 'result-message result-incorrect';
                 
+                // 有限模式：答错时保持在剩余列表中（不做处理，继续参与随机出题）
+                
                 // 答错时显示控制按钮
                 document.getElementById('next-btn').style.display = 'inline-block';
                 document.getElementById('show-info-btn').style.display = 'inline-block';
@@ -1386,6 +1951,24 @@
 
             // 更新统计信息
             updateStats();
+        }
+
+        // 处理有限模式答对的情况
+        function handleFiniteCorrectAnswer() {
+            if (!currentExample) return;
+            
+            // 从剩余例词中移除当前例词
+            const currentIndex = remainingKanji.findIndex(item => 
+                item.kanji === currentExample.kanji && 
+                item.example === currentExample.example && 
+                item.reading === currentExample.reading
+            );
+            
+            if (currentIndex !== -1) {
+                const completedItem = remainingKanji.splice(currentIndex, 1)[0];
+                completedKanji.push(completedItem);
+                console.log(`答对了！剩余 ${remainingKanji.length} 题，已完成 ${completedKanji.length} 题`);
+            }
         }
 
         // 检查输入答案
@@ -1468,6 +2051,11 @@
                 resultMessage.textContent = '正确！';
                 resultMessage.className = 'result-message result-correct';
                 
+                // 有限模式下答对时的处理
+                if (isFiniteMode && currentExample) {
+                    handleFiniteCorrectAnswer();
+                }
+                
                 // 如果是复习模式且答对了，完成复习任务
                 if (gameMode === 'input' && currentExample) {
                     completeReview(currentExample.kanji);
@@ -1481,9 +2069,21 @@
                 resultMessage.textContent = `错误！正确读音是：${correctAnswer}`;
                 resultMessage.className = 'result-message result-incorrect';
                 
+                // 有限模式下答错时的处理（可以选择是否从题库中移除）
+                // 这里选择不移除，让用户有机会重新答题
+                
                 // 答错时显示控制按钮
                 document.getElementById('next-btn').style.display = 'inline-block';
                 document.getElementById('show-info-btn').style.display = 'inline-block';
+                
+                // 将虚拟键盘的提交按钮改为下一题按钮
+                const virtualSubmitBtn = document.querySelector('.submit-key');
+                if (virtualSubmitBtn) {
+                    virtualSubmitBtn.textContent = '下一题';
+                    virtualSubmitBtn.style.opacity = '1';
+                    virtualSubmitBtn.style.pointerEvents = 'auto';
+                    virtualSubmitBtn.setAttribute('data-key', 'next');
+                }
             }
             resultMessage.style.display = 'block';
             
@@ -1493,11 +2093,7 @@
 
         // 更新统计信息
         function updateStats() {
-            document.getElementById('correct-count').textContent = gameStats.correct;
-            document.getElementById('total-count').textContent = gameStats.total;
-            
-            const accuracy = gameStats.total > 0 ? Math.round((gameStats.correct / gameStats.total) * 100) : 0;
-            document.getElementById('accuracy').textContent = accuracy + '%';
+            // 统计区域已移除，此函数保留为空以避免错误
         }
 
         // 显示/隐藏汉字详情
@@ -1515,7 +2111,7 @@
         // 显示汉字详情
         function showKanjiInfo() {
             const infoDiv = document.getElementById('kanji-info');
-            let html = `<h3>汉字：${currentKanji.kanji}</h3>`;
+            let html = ``;
             
             if (currentKanji.variant) {
                 html += `<p><strong>异体字：</strong>${currentKanji.variant}</p>`;
@@ -1530,7 +2126,7 @@
             // 显示音读
             onReadings.forEach(reading => {
                 html += `
-                    <div style="margin: 10px 0; padding: 10px; border-left: 3px solid #667eea;">
+                    <div style="margin: 5px 0; padding: 5px; border-left: 3px solid #667eea;">
                         <span class="reading-type">音读</span>
                         <strong>${reading.reading}</strong>
                         ${reading.okurigana_pattern ? `(${reading.okurigana_pattern})` : ''}
@@ -1543,7 +2139,7 @@
             const mergedKunReadings = mergeKunReadings(kunReadings);
             mergedKunReadings.forEach(reading => {
                 html += `
-                    <div style="margin: 10px 0; padding: 10px; border-left: 3px solid #667eea;">
+                    <div style="margin: 5px 0; padding: 5px; border-left: 3px solid #667eea;">
                         <span class="reading-type">训读</span>
                         <strong>${reading.reading}</strong>
                         <div class="examples">例词：${reading.examples.join('、')}</div>
@@ -1635,33 +2231,39 @@
             document.getElementById('kanji-info').style.display = 'none';
             document.getElementById('options').innerHTML = '';
             document.getElementById('question').textContent = '学习计划设置';
-            document.getElementById('kanji-display').style.fontSize = '2em';
+            document.getElementById('kanji-display').style.fontSize = '32px';
             document.getElementById('kanji-display').innerHTML = `
                 <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-                    <h3 style="margin-bottom: 20px; color: #333;">📚 学习计划管理</h3>
+                    <h3 style="margin-bottom: 2px; color: #333; font-size: 0.75em;">📚 学习计划管理</h3>
                     
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: #667eea; margin-bottom: 15px;">📊 学习统计</h4>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                            <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #28a745;">${studyPlan.learnedWords.length}</div>
-                                <div style="color: #666; font-size: 0.9em;">已学汉字</div>
+                    <div style="background: #f8f9fa; padding: 3px; border-radius: 3px; margin-bottom: 3px;">
+                        <h4 style="color: #667eea; margin-bottom: 2px; font-size: 0.6em;">📊 学习统计</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;">
+                            <div style="text-align: center; padding: 2px; background: white; border-radius: 2px;">
+                                <div style="font-size: 0.8em; font-weight: bold; color: #28a745;">${studyPlan.learnedWords.length}</div>
+                                <div style="color: #666; font-size: 0.5em;">已学汉字</div>
                             </div>
-                            <div style="text-align: center; padding: 10px; background: white; border-radius: 8px;">
-                                <div style="font-size: 1.5em; font-weight: bold; color: #dc3545;">${getTodayReviewCount()}</div>
-                                <div style="color: #666; font-size: 0.9em;">今日复习</div>
+                            <div style="text-align: center; padding: 2px; background: white; border-radius: 2px;">
+                                <div style="font-size: 0.8em; font-weight: bold; color: #dc3545;">${getTodayReviewCount()}</div>
+                                <div style="color: #666; font-size: 0.5em;">今日复习</div>
                             </div>
                         </div>
                     </div>
                     
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h4 style="color: #667eea; margin-bottom: 15px;">🔄 艾宾浩斯复习计划</h4>
-                        <div style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+                    <div style="background: #f8f9fa; padding: 3px; border-radius: 3px; margin-bottom: 10px;">
+                        <h4 style="color: #667eea; margin-bottom: 2px; font-size: 0.6em;">🔄 艾宾浩斯复习计划</h4>
+                        <div style="font-size: 0.5em; color: #666; margin-bottom: 2px;">
                             复习间隔：1天 → 3天 → 7天 → 15天 → 30天
                         </div>
-                        <div id="review-schedule" style="max-height: 200px; overflow-y: auto;">
+                        <div id="review-schedule" style="max-height: 60px; overflow-y: auto;">
                             ${getReviewScheduleHTML()}
                         </div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button onclick="toggleMode()" class="btn" style="padding: 8px 16px; font-size: 1em; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            切换模式
+                        </button>
                     </div>
                 </div>
             `;
@@ -1669,8 +2271,16 @@
             // 隐藏不需要的按钮
             document.getElementById('next-btn').style.display = 'none';
             document.getElementById('show-info-btn').style.display = 'none';
+            document.getElementById('search-btn').style.display = 'none';
+            document.getElementById('mode-btn').style.display = 'none';
             const prevBtn = document.getElementById('prev-btn');
             if (prevBtn) prevBtn.style.display = 'none';
+            
+            // 清空动态生成的导航按钮
+            const navigationButtons = document.querySelector('.navigation-buttons');
+            if (navigationButtons) {
+                navigationButtons.innerHTML = '';
+            }
         }
 
 
@@ -1686,7 +2296,7 @@
         // 获取复习计划HTML
         function getReviewScheduleHTML() {
             if (studyPlan.reviewSchedule.length === 0) {
-                return '<div style="color: #999; text-align: center; padding: 20px;">暂无复习计划</div>';
+                return '<div style="color: #999; text-align: center; padding: 2px; font-size: 0.5em;">暂无复习计划</div>';
             }
             
             const today = new Date();
@@ -1703,10 +2313,10 @@
                 
                 return `
                     <div style="display: flex; justify-content: space-between; align-items: center; 
-                                padding: 8px 12px; margin: 5px 0; background: ${isToday ? '#fff3cd' : 'white'}; 
-                                border-radius: 5px; border-left: 3px solid ${isToday ? '#ffc107' : '#667eea'};">
-                        <span style="font-weight: bold; font-size: 1.2em;">${item.kanji}</span>
-                        <span style="color: #666; font-size: 0.9em;">${dateStr} ${isToday ? '(今天)' : ''}</span>
+                                padding: 1px 2px; margin: 0.5px 0; background: ${isToday ? '#fff3cd' : 'white'}; 
+                                border-radius: 1px; border-left: 1px solid ${isToday ? '#ffc107' : '#667eea'};">
+                        <span style="font-weight: bold; font-size: 0.7em;">${item.kanji}</span>
+                        <span style="color: #666; font-size: 0.5em;">${dateStr} ${isToday ? '(今天)' : ''}</span>
                     </div>
                 `;
             }).join('');
@@ -1799,37 +2409,19 @@
             
             showStudyMode();
             
-            // 添加"标记为已学"按钮
+            // 为已学汉字添加状态显示
             const kanjiInfo = document.getElementById('kanji-info');
             if (kanjiInfo && kanjiInfo.style.display !== 'none') {
                 const currentKanjiChar = document.getElementById('kanji-display').textContent;
                 const isLearned = studyPlan.learnedWords.find(item => item.kanji === currentKanjiChar);
                 
-                if (!isLearned) {
-                    const learnBtn = document.createElement('button');
-                    learnBtn.textContent = '✓ 标记为已学';
-                    learnBtn.className = 'btn';
-                    learnBtn.style.background = '#28a745';
-                    learnBtn.style.color = 'white';
-                    learnBtn.style.marginTop = '10px';
-                    learnBtn.onclick = () => {
-                        addToLearned(currentKanjiChar);
-                        learnBtn.textContent = '✓ 已学习';
-                        learnBtn.disabled = true;
-                        learnBtn.style.background = '#6c757d';
-                        // 标记为已学后，自动跳转到下一个未学汉字
-                        setTimeout(() => {
-                            findFirstUnlearnedKanji();
-                            enhancedShowStudyMode();
-                        }, 500);
-                    };
-                    kanjiInfo.appendChild(learnBtn);
-                } else {
+                if (isLearned) {
                     const statusDiv = document.createElement('div');
                     statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
                     statusDiv.style.marginTop = '10px';
                     kanjiInfo.appendChild(statusDiv);
                 }
+                // 移除这里的标记为已学按钮，因为已经移到controls区域了
             }
         }
         
@@ -2008,27 +2600,50 @@
                     statusDiv.innerHTML = '<span style="color: #28a745; font-weight: bold;">✓ 已学习</span>';
                     statusDiv.style.marginTop = '10px';
                     kanjiInfo.appendChild(statusDiv);
-                } else {
-                    const learnBtn = document.createElement('button');
-                    learnBtn.textContent = '✓ 标记为已学';
-                    learnBtn.className = 'btn';
-                    learnBtn.style.background = '#28a745';
-                    learnBtn.style.color = 'white';
-                    learnBtn.style.marginTop = '10px';
-                    learnBtn.onclick = () => {
-                        addToLearned(currentKanjiChar);
-                        learnBtn.textContent = '✓ 已学习';
-                        learnBtn.disabled = true;
-                        learnBtn.style.background = '#6c757d';
-                    };
-                    kanjiInfo.appendChild(learnBtn);
                 }
+                // 移除这里的标记为已学按钮，因为已经移到controls区域了
             }
             
             clearSearch();
             
             // 滚动到游戏区域
             document.querySelector('.game-area').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 切换搜索框显示
+        function toggleSearch() {
+            const searchContainer = document.getElementById('search-container');
+            const searchInput = document.getElementById('search-input');
+            
+            if (searchContainer.style.display === 'none') {
+                // 展开搜索框
+                searchContainer.style.display = 'block';
+                searchContainer.style.opacity = '0';
+                searchContainer.style.transform = 'scaleX(0)';
+                searchContainer.style.transition = 'all 0.3s ease';
+                
+                // 触发动画
+                setTimeout(() => {
+                    searchContainer.style.opacity = '1';
+                    searchContainer.style.transform = 'scaleX(1)';
+                }, 10);
+                
+                // 聚焦输入框
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            } else {
+                // 收起搜索框
+                searchContainer.style.opacity = '0';
+                searchContainer.style.transform = 'scaleX(0)';
+                
+                setTimeout(() => {
+                    searchContainer.style.display = 'none';
+                    // 清除搜索结果
+                    document.getElementById('search-results').style.display = 'none';
+                    searchInput.value = '';
+                }, 300);
+            }
         }
         
         // 清除搜索
@@ -2190,8 +2805,14 @@
             document.body.appendChild(virtualKeyboard);
             
             // 添加键盘按键事件
-            virtualKeyboard.addEventListener('click', handleKeyboardClick);
-            virtualKeyboard.addEventListener('touchend', handleKeyboardClick);
+            virtualKeyboard.addEventListener('click', (e) => {
+                e.stopPropagation(); // 阻止事件冒泡，防止点击键盘时关闭键盘
+                handleKeyboardClick(e);
+            });
+            virtualKeyboard.addEventListener('touchend', (e) => {
+                e.stopPropagation(); // 阻止事件冒泡，防止触摸键盘时关闭键盘
+                handleKeyboardClick(e);
+            });
             
             // 防止触摸时的默认行为
             virtualKeyboard.addEventListener('touchstart', function(e) {
@@ -2277,6 +2898,11 @@
                      setTimeout(() => {
                          checkInputAnswer();
                      }, 100);
+                     break;
+                     
+                 case 'next':
+                     // 点击下一题按钮
+                     nextQuestion();
                      break;
                      
                  default:
@@ -2518,6 +3144,21 @@
             searchInput.addEventListener('blur', function() {
                 this.style.borderColor = '#ddd';
                 this.style.boxShadow = 'none';
+            });
+            
+            // 添加全局点击事件监听器，点击空白处关闭虚拟键盘
+            document.addEventListener('click', function(e) {
+                // 检查是否点击了输入框或虚拟键盘
+                const input = document.getElementById('reading-input');
+                const keyboard = document.getElementById('virtual-keyboard');
+                
+                // 如果虚拟键盘存在且可见
+                if (keyboard && isKeyboardVisible) {
+                    // 如果点击的不是输入框也不是键盘，则关闭键盘
+                    if (!input?.contains(e.target) && !keyboard.contains(e.target)) {
+                        hideVirtualKeyboard();
+                    }
+                }
             });
         });
     </script>
